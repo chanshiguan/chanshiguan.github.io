@@ -1,0 +1,1161 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.0" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="iOS,动画," />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.1.0" />
+
+
+
+
+
+
+<meta name="description" content="介绍CAReplicatorLayer的目的是为了高效生成许多相似的图层。它会绘制一个或多个图层的子图层，并在每个复制体上应用不同的变换。只要脑洞足够大，效果就足够炫。
+实践在本期的demo中，我一共实现了5个效果。
+1.音乐震动条思路
+
+用CALayer创建一个矩形条，作为base
+用CAReplicatorLayer复制baseLayer。
+设置动画，让他们长短发生变化。也许应该是：trans">
+<meta property="og:type" content="article">
+<meta property="og:title" content="CAReplicatorLayer 学习和实践">
+<meta property="og:url" content="https://chanshiguan.github.io/2017/03/05/CAReplicatorLayer-学习和实践/index.html">
+<meta property="og:site_name" content="陈伯君's 博客">
+<meta property="og:description" content="介绍CAReplicatorLayer的目的是为了高效生成许多相似的图层。它会绘制一个或多个图层的子图层，并在每个复制体上应用不同的变换。只要脑洞足够大，效果就足够炫。
+实践在本期的demo中，我一共实现了5个效果。
+1.音乐震动条思路
+
+用CALayer创建一个矩形条，作为base
+用CAReplicatorLayer复制baseLayer。
+设置动画，让他们长短发生变化。也许应该是：trans">
+<meta property="og:image" content="http://upload-images.jianshu.io/upload_images/937424-25ad113321d3dc43.gif?imageMogr2/auto-orient/strip">
+<meta property="og:updated_time" content="2017-03-04T10:38:31.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="CAReplicatorLayer 学习和实践">
+<meta name="twitter:description" content="介绍CAReplicatorLayer的目的是为了高效生成许多相似的图层。它会绘制一个或多个图层的子图层，并在每个复制体上应用不同的变换。只要脑洞足够大，效果就足够炫。
+实践在本期的demo中，我一共实现了5个效果。
+1.音乐震动条思路
+
+用CALayer创建一个矩形条，作为base
+用CAReplicatorLayer复制baseLayer。
+设置动画，让他们长短发生变化。也许应该是：trans">
+<meta name="twitter:image" content="http://upload-images.jianshu.io/upload_images/937424-25ad113321d3dc43.gif?imageMogr2/auto-orient/strip">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    sidebar: {"position":"left","display":"post","offset":12,"offset_float":0,"b2t":false,"scrollpercent":false},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: '6393166282442671000',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="https://chanshiguan.github.io/2017/03/05/CAReplicatorLayer-学习和实践/"/>
+
+
+
+
+
+  <title> CAReplicatorLayer 学习和实践 | 陈伯君's 博客 </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+
+
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?d3c7272992bf77ba5ecdb6457f901bb7";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container one-collumn sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">陈伯君's 博客</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br />
+            
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocapitalize="off" autocomplete="off" autocorrect="off"
+             placeholder="搜索..." spellcheck="false"
+             type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="https://chanshiguan.github.io/2017/03/05/CAReplicatorLayer-学习和实践/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="陈伯君">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/uploads/owen.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="陈伯君's 博客">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                CAReplicatorLayer 学习和实践
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-03-05T02:24:42+08:00">
+                2017-03-04
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/iOS开发/" itemprop="url" rel="index">
+                    <span itemprop="name">iOS开发</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2017/03/05/CAReplicatorLayer-学习和实践/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2017/03/05/CAReplicatorLayer-学习和实践/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+             <span id="/2017/03/05/CAReplicatorLayer-学习和实践/" class="leancloud_visitors" data-flag-title="CAReplicatorLayer 学习和实践">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数 </span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+            <span class="post-meta-divider">|</span>
+            <span class="page-pv"><i class="fa fa-file-o"></i>
+            <span class="busuanzi-value" id="busuanzi_value_page_pv" ></span>
+            </span>
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h2 id="介绍"><a href="#介绍" class="headerlink" title="介绍"></a>介绍</h2><p>CAReplicatorLayer的目的是为了高效生成许多相似的图层。它会绘制一个或多个图层的子图层，并在每个复制体上应用不同的变换。只要脑洞足够大，效果就足够炫。</p>
+<h2 id="实践"><a href="#实践" class="headerlink" title="实践"></a>实践</h2><p>在本期的demo中，我一共实现了5个效果。<br><img src="http://upload-images.jianshu.io/upload_images/937424-25ad113321d3dc43.gif?imageMogr2/auto-orient/strip" alt="效果.gif"></p>
+<h3 id="1-音乐震动条"><a href="#1-音乐震动条" class="headerlink" title="1.音乐震动条"></a>1.音乐震动条</h3><p>思路</p>
+<ol>
+<li>用CALayer创建一个矩形条，作为base</li>
+<li>用CAReplicatorLayer复制baseLayer。</li>
+<li>设置动画，让他们长短发生变化。也许应该是：transform.scale.y。</li>
+</ol>
+<figure class="highlight objc"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div></pre></td><td class="code"><pre><div class="line">- (<span class="keyword">void</span>)musicLayer</div><div class="line">&#123;</div><div class="line"><span class="comment">//背景layer，无实在意义。仅用作多页面显示不同区域。</span></div><div class="line"><span class="built_in">CALayer</span> *_musicLayer = [<span class="built_in">CALayer</span> layer];</div><div class="line">_musicLayer.frame = <span class="built_in">CGRectMake</span>(<span class="number">0</span>, <span class="number">64</span>, LAYER_WIDTH, LAYER_WIDTH);</div><div class="line">_musicLayer.backgroundColor = [<span class="built_in">UIColor</span> lightGrayColor].CGColor;</div><div class="line">[<span class="keyword">self</span>.view.layer addSublayer:_musicLayer];</div><div class="line"></div><div class="line"><span class="comment">//创建一个小长方形</span></div><div class="line"><span class="built_in">CALayer</span> *baseLayer = [<span class="built_in">CALayer</span> layer];</div><div class="line">baseLayer.frame = <span class="built_in">CGRectMake</span>(<span class="number">0</span>, <span class="number">0</span>, <span class="number">20</span>, <span class="number">100</span>);</div><div class="line">baseLayer.backgroundColor = [<span class="built_in">UIColor</span> redColor].CGColor;</div><div class="line">baseLayer.cornerRadius = <span class="number">5</span>;</div><div class="line">baseLayer.anchorPoint = <span class="built_in">CGPointMake</span>(<span class="number">0</span>, <span class="number">1</span>);</div><div class="line">baseLayer.position = <span class="built_in">CGPointMake</span>(<span class="number">10</span>, <span class="built_in">CGRectGetWidth</span>(_musicLayer.bounds));</div><div class="line"></div><div class="line"><span class="comment">//创建复制layer</span></div><div class="line"><span class="built_in">CAReplicatorLayer</span> *replicatorLayer = [<span class="built_in">CAReplicatorLayer</span> layer];</div><div class="line">replicatorLayer.instanceCount = <span class="number">5</span>;  <span class="comment">//复制5个</span></div><div class="line">replicatorLayer.instanceTransform = <span class="built_in">CATransform3DMakeTranslation</span>(<span class="number">40</span>, <span class="number">0</span>, <span class="number">0</span>); <span class="comment">//复制的时候产生位移40</span></div><div class="line">replicatorLayer.instanceDelay = <span class="number">0.1</span>;    <span class="comment">//复制时延迟时间</span></div><div class="line">replicatorLayer.instanceRedOffset -= <span class="number">0.1</span>;</div><div class="line">[replicatorLayer addSublayer:baseLayer];</div><div class="line">[_musicLayer addSublayer:replicatorLayer];</div><div class="line"></div><div class="line"><span class="comment">//animation</span></div><div class="line"><span class="built_in">CAKeyframeAnimation</span> *animation = [<span class="built_in">CAKeyframeAnimation</span> animationWithKeyPath:<span class="string">@"transform.scale.y"</span>];</div><div class="line">animation.duration = <span class="number">1</span>;</div><div class="line">animation.values = @[@<span class="number">1</span>,@<span class="number">0.5</span>,@<span class="number">0</span>];</div><div class="line">animation.repeatCount = HUGE;</div><div class="line">animation.autoreverses = <span class="literal">YES</span>;</div><div class="line">animation.removedOnCompletion = <span class="literal">NO</span>;</div><div class="line">animation.fillMode = kCAFillModeForwards;</div><div class="line">[baseLayer addAnimation:animation forKey:<span class="literal">nil</span>];</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>代码很简单，也不复杂。不过需要注意的是：我尝试了很多动画方法。想能用CABasicAnimation尽量就不用CAKeyframeAnimation。不过最后以失败告终。不知道是真的不行，还是技术不行。有大神知道为什么请麻烦告诉一下。学习学习。</p>
+<h3 id="2-三角形移动的等待指示器"><a href="#2-三角形移动的等待指示器" class="headerlink" title="2.三角形移动的等待指示器"></a>2.三角形移动的等待指示器</h3><p>思路</p>
+<ol>
+<li>用CALayer创建一个圆形，作为base</li>
+<li>用CAReplicatorLayer复制3个baseLayer。</li>
+<li>设置动画，让他们发生位移变化。会改变什么属性呢？我们先猜一猜。</li>
+</ol>
+<figure class="highlight objc"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div></pre></td><td class="code"><pre><div class="line">- (<span class="keyword">void</span>)trilateralLayer</div><div class="line">&#123;</div><div class="line"><span class="built_in">CALayer</span> *_trilateralLayer = [<span class="built_in">CALayer</span> layer];</div><div class="line">_trilateralLayer.frame = <span class="built_in">CGRectMake</span>(LAYER_WIDTH, <span class="number">64</span>, LAYER_WIDTH, LAYER_WIDTH);</div><div class="line">_trilateralLayer.backgroundColor = [<span class="built_in">UIColor</span> orangeColor].CGColor;</div><div class="line">[<span class="keyword">self</span>.view.layer addSublayer:_trilateralLayer];</div><div class="line"></div><div class="line"><span class="comment">//老规矩，创建一个圆形的baseLayer</span></div><div class="line"><span class="built_in">CGFloat</span> radius                     = <span class="number">100</span>/<span class="number">4.0</span>;</div><div class="line"><span class="built_in">CGFloat</span> transX                     = <span class="number">100</span> - radius;</div><div class="line"><span class="built_in">CAShapeLayer</span> *baseLayer = [<span class="built_in">CAShapeLayer</span> layer];</div><div class="line">baseLayer.frame = <span class="built_in">CGRectMake</span>(<span class="number">0</span>, <span class="number">0</span>, radius, radius);</div><div class="line">baseLayer.fillColor = [<span class="built_in">UIColor</span> greenColor].CGColor;</div><div class="line">baseLayer.path = [<span class="built_in">UIBezierPath</span> bezierPathWithOvalInRect:<span class="built_in">CGRectMake</span>(<span class="number">0</span>, <span class="number">0</span>, radius, radius)].CGPath;</div><div class="line"></div><div class="line"></div><div class="line"><span class="comment">/*        创建克隆层         */</span></div><div class="line"><span class="built_in">CAReplicatorLayer</span> *replicatorLayer = [<span class="built_in">CAReplicatorLayer</span> layer];</div><div class="line">replicatorLayer.frame              = <span class="built_in">CGRectMake</span>(<span class="number">0</span>, <span class="number">0</span>, radius, radius);</div><div class="line">replicatorLayer.instanceDelay      = <span class="number">0.0</span>;   <span class="comment">//因为不需要一个一个展现，所以延迟设置成0</span></div><div class="line">replicatorLayer.instanceCount      = <span class="number">3</span>;</div><div class="line"><span class="comment">//这里面要设置复制的layer的变换了。先向右移动一定像素，再顺时针移动一定角度。这里有个点，至少我当时不是很明白，就是为什么这么设置就会闭合成一个三角形。那么当你弄三只小木棍模拟一下这个动画变换过程，你就会发现其中的道理了。</span></div><div class="line"><span class="built_in">CATransform3D</span> trans3D              = <span class="built_in">CATransform3DIdentity</span>;</div><div class="line">trans3D                            = <span class="built_in">CATransform3DTranslate</span>(trans3D, transX, <span class="number">0</span>, <span class="number">0</span>);</div><div class="line">trans3D                            = <span class="built_in">CATransform3DRotate</span>(trans3D, <span class="number">120.0</span>*M_PI/<span class="number">180.0</span>, <span class="number">0.0</span>, <span class="number">0.0</span>, <span class="number">1.0</span>);</div><div class="line">replicatorLayer.instanceTransform  = trans3D;</div><div class="line">[replicatorLayer addSublayer:baseLayer];</div><div class="line">[_trilateralLayer addSublayer:replicatorLayer];</div><div class="line"></div><div class="line"><span class="comment">//这个动画就很简单了，仅仅是改变了位置。</span></div><div class="line"><span class="built_in">CABasicAnimation</span> *animation = [<span class="built_in">CABasicAnimation</span> animationWithKeyPath:<span class="string">@"transform"</span>];</div><div class="line">animation.duration = <span class="number">1</span>;</div><div class="line">animation.fromValue = [<span class="built_in">NSValue</span> valueWithCATransform3D:<span class="built_in">CATransform3DMakeTranslation</span>(<span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>)];</div><div class="line">animation.toValue = [<span class="built_in">NSValue</span> valueWithCATransform3D:<span class="built_in">CATransform3DMakeTranslation</span>(transX ,<span class="number">0</span>, <span class="number">0</span>)];</div><div class="line">animation.repeatCount = HUGE;</div><div class="line">animation.autoreverses = <span class="literal">NO</span>;</div><div class="line">animation.removedOnCompletion = <span class="literal">NO</span>;</div><div class="line">animation.fillMode = kCAFillModeForwards;</div><div class="line">[baseLayer addAnimation:animation forKey:<span class="literal">nil</span>];</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>这个动画我实现了很久，总是达不到预期的效果。最后还是看了教程照猫画虎才实现的。不过明白了一些就是：layer的大小，以及运动的距离，都会影响动画的效果。所以动画需要计算来设计。</p>
+<h3 id="3-正方形移动的等待指示器"><a href="#3-正方形移动的等待指示器" class="headerlink" title="3.正方形移动的等待指示器"></a>3.正方形移动的等待指示器</h3><p>思路</p>
+<ol>
+<li>用CALayer创建一个圆形，作为base</li>
+<li>用CAReplicatorLayer横向复制5个baseLayer，然后把CAReplicatorLayer作为baseLayer再纵向复制5个。这样就有了一个正方形</li>
+<li>设置动画，让他们由大变小。</li>
+</ol>
+<figure class="highlight objc"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div></pre></td><td class="code"><pre><div class="line">- (<span class="keyword">void</span>)rectLayer</div><div class="line">&#123;</div><div class="line"><span class="built_in">CALayer</span> *_rectLayer = [<span class="built_in">CALayer</span> layer];</div><div class="line">_rectLayer.frame = <span class="built_in">CGRectMake</span>(<span class="number">0</span>, <span class="number">64</span> + LAYER_WIDTH, LAYER_WIDTH, LAYER_WIDTH);</div><div class="line">_rectLayer.backgroundColor = [<span class="built_in">UIColor</span> orangeColor].CGColor;</div><div class="line">[<span class="keyword">self</span>.view.layer addSublayer:_rectLayer];</div><div class="line"></div><div class="line"><span class="built_in">CGFloat</span> radius                     = <span class="number">50</span>/<span class="number">4.0</span>;</div><div class="line"><span class="built_in">CGFloat</span> transX                     = radius + <span class="number">5</span>;</div><div class="line"><span class="built_in">CAShapeLayer</span> *baseLayer = [<span class="built_in">CAShapeLayer</span> layer];</div><div class="line">baseLayer.frame = <span class="built_in">CGRectMake</span>(<span class="number">30</span>, <span class="number">30</span>, radius, radius);</div><div class="line">baseLayer.fillColor = [<span class="built_in">UIColor</span> redColor].CGColor;</div><div class="line">baseLayer.path = [<span class="built_in">UIBezierPath</span> bezierPathWithOvalInRect:<span class="built_in">CGRectMake</span>(<span class="number">0</span>, <span class="number">0</span>, radius, radius)].CGPath;</div><div class="line"></div><div class="line"><span class="comment">//横向创建5个圆形baseLayer</span></div><div class="line"><span class="built_in">CAReplicatorLayer</span> *replicator1 = [<span class="built_in">CAReplicatorLayer</span> layer];</div><div class="line">replicator1.instanceCount = <span class="number">5</span>;</div><div class="line">replicator1.instanceTransform = <span class="built_in">CATransform3DMakeTranslation</span>(transX, <span class="number">0</span>, <span class="number">0</span>);</div><div class="line">replicator1.instanceDelay = <span class="number">0.3</span>; <span class="comment">//这个属性很重要，设置延迟时间才会出现逐个变化的效果</span></div><div class="line">[replicator1 addSublayer:baseLayer];</div><div class="line"></div><div class="line"><span class="comment">//将上面创建的replicator1 作为子视图在纵向创建5个，形成一个正方形。</span></div><div class="line"><span class="built_in">CAReplicatorLayer</span> *replicator2 = [<span class="built_in">CAReplicatorLayer</span> layer];</div><div class="line">replicator2.instanceCount = <span class="number">5</span>;</div><div class="line">replicator2.instanceTransform = <span class="built_in">CATransform3DMakeTranslation</span>(<span class="number">0</span>, transX, <span class="number">0</span>);</div><div class="line">replicator2.instanceDelay = <span class="number">0.3</span>;</div><div class="line">[replicator2 addSublayer:replicator1];</div><div class="line">[_rectLayer addSublayer:replicator2];</div><div class="line"></div><div class="line"><span class="built_in">CABasicAnimation</span> *animation = [<span class="built_in">CABasicAnimation</span> animationWithKeyPath:<span class="string">@"transform"</span>];</div><div class="line">animation.duration = <span class="number">1</span>;</div><div class="line">animation.fromValue = [<span class="built_in">NSValue</span> valueWithCATransform3D:<span class="built_in">CATransform3DMakeScale</span>(<span class="number">1</span>, <span class="number">1</span>, <span class="number">0</span>)];</div><div class="line">animation.toValue = [<span class="built_in">NSValue</span> valueWithCATransform3D:<span class="built_in">CATransform3DMakeScale</span>(<span class="number">0.2</span>, <span class="number">0.2</span>, <span class="number">0</span>)];</div><div class="line">animation.repeatCount = HUGE;</div><div class="line">animation.autoreverses = <span class="literal">YES</span>; <span class="comment">//autoreverses需要注意，他的意思是动画结束时执行逆动画</span></div><div class="line">[baseLayer addAnimation:animation forKey:<span class="literal">nil</span>];</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>这个动画唯一需要注意的地方就是instanceDelay属性。</p>
+<h3 id="4-圆形移动的等待指示器"><a href="#4-圆形移动的等待指示器" class="headerlink" title="4.圆形移动的等待指示器"></a>4.圆形移动的等待指示器</h3><p>思路</p>
+<ol>
+<li>用CALayer创建一个圆形，作为base，并设置他围绕中心点旋转。</li>
+<li>用CAReplicatorLayer横向复制10个baseLayer，并设置为圆形。</li>
+<li>设置动画，让他们由大变小。你们的思路跟我一样了么？</li>
+</ol>
+<figure class="highlight objc"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div></pre></td><td class="code"><pre><div class="line">- (<span class="keyword">void</span>)progressLayer</div><div class="line">&#123;</div><div class="line"><span class="built_in">CALayer</span> *_progressLayer = [<span class="built_in">CALayer</span> layer];</div><div class="line">_progressLayer.frame = <span class="built_in">CGRectMake</span>(<span class="number">0</span>, <span class="number">64</span> + LAYER_WIDTH * <span class="number">2</span>, LAYER_WIDTH, LAYER_WIDTH);</div><div class="line">_progressLayer.backgroundColor = [<span class="built_in">UIColor</span> lightGrayColor].CGColor;</div><div class="line">[<span class="keyword">self</span>.view.layer addSublayer:_progressLayer];</div><div class="line"></div><div class="line"><span class="built_in">CAReplicatorLayer</span> *replicator = [<span class="built_in">CAReplicatorLayer</span> layer];</div><div class="line">replicator.frame = _progressLayer.bounds;</div><div class="line">replicator.instanceCount = <span class="number">10</span>;</div><div class="line"><span class="built_in">CGFloat</span> angle = <span class="number">2</span> * M_PI / <span class="number">10</span>; <span class="comment">//按照一定角度复制</span></div><div class="line">replicator.instanceTransform = <span class="built_in">CATransform3DMakeRotation</span>(angle, <span class="number">0</span>, <span class="number">0</span>, <span class="number">1</span>);</div><div class="line"><span class="comment">//1.0 / 10.0 = 0.1</span></div><div class="line"><span class="comment">//1 / 10 = 0</span></div><div class="line"><span class="comment">//如果这个没想好，没设置对，那么他就不会出现渐渐变大的效果，该问题我用了10多个小时才找出来。</span></div><div class="line">replicator.instanceDelay = <span class="number">1.0</span> / <span class="number">10.0</span>;  <span class="comment">//血的教训，整型和浮点型的重要性</span></div><div class="line">[_progressLayer addSublayer:replicator];</div><div class="line"></div><div class="line"><span class="built_in">CGFloat</span> radius = <span class="number">20</span>;</div><div class="line"><span class="built_in">CAShapeLayer</span> *baseLayer = [<span class="built_in">CAShapeLayer</span> layer];</div><div class="line">baseLayer.frame = <span class="built_in">CGRectMake</span>(<span class="number">50</span>, <span class="number">50</span>, radius, radius);</div><div class="line">baseLayer.fillColor = [<span class="built_in">UIColor</span> redColor].CGColor;</div><div class="line">baseLayer.path = [<span class="built_in">UIBezierPath</span> bezierPathWithOvalInRect:<span class="built_in">CGRectMake</span>(<span class="number">0</span>, <span class="number">0</span>, radius, radius)].CGPath;</div><div class="line">baseLayer.transform = <span class="built_in">CATransform3DMakeScale</span>(<span class="number">0.01</span>, <span class="number">0.01</span>, <span class="number">0.01</span>); <span class="comment">//先缩小，达到由小变大的效果</span></div><div class="line">[replicator addSublayer:baseLayer];</div><div class="line"></div><div class="line"><span class="comment">//到目前为止，baseLayer已经按照一定角度排布好，然后每个baseLayer都会围绕中心点转动。那么唯一需要我们做的就是改变他们的大小</span></div><div class="line"><span class="built_in">CABasicAnimation</span> *animation = [<span class="built_in">CABasicAnimation</span> animationWithKeyPath:<span class="string">@"transform.scale"</span>];</div><div class="line">animation.duration = <span class="number">1</span>;</div><div class="line">animation.fromValue = @<span class="number">1</span>;</div><div class="line">animation.toValue = @<span class="number">0.1</span>;</div><div class="line">animation.repeatCount = HUGE;</div><div class="line">[baseLayer addAnimation:animation forKey:<span class="literal">nil</span>];</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>这个动画也不难，唯一需要注意的就是属性的类型。切记切记。</p>
+<h3 id="5-倒影的实现"><a href="#5-倒影的实现" class="headerlink" title="5.倒影的实现"></a>5.倒影的实现</h3><p>思路</p>
+<ol>
+<li>创建一个CALayer，并设置他的contents属性，显示图片。作为base。当然你也可以使用UIImageView。个人喜好吧。</li>
+<li>用CAReplicatorLayer横向复制2个baseLayer。将复制的图层沿着x轴翻转。就能实现倒影效果了，为了锦上添花，我们还应该设置他的透明度以及颜色值变化。不多说了，太简单，直接上代码。</li>
+</ol>
+<figure class="highlight objc"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div></pre></td><td class="code"><pre><div class="line">- (<span class="keyword">void</span>)shadowLayer</div><div class="line">&#123;</div><div class="line"><span class="built_in">CALayer</span> *_shadowLayer = [<span class="built_in">CALayer</span> layer];</div><div class="line">_shadowLayer.frame = <span class="built_in">CGRectMake</span>(LAYER_WIDTH, <span class="number">64</span> + LAYER_WIDTH, LAYER_WIDTH, LAYER_WIDTH * <span class="number">2</span>);</div><div class="line">_shadowLayer.backgroundColor = [<span class="built_in">UIColor</span> whiteColor].CGColor;</div><div class="line">[<span class="keyword">self</span>.view.layer addSublayer:_shadowLayer];</div><div class="line"></div><div class="line"><span class="built_in">CALayer</span> *baseLayer = [<span class="built_in">CALayer</span> layer];</div><div class="line">baseLayer.frame = <span class="built_in">CGRectMake</span>(<span class="number">0</span>, <span class="number">0</span>, LAYER_WIDTH, LAYER_WIDTH);</div><div class="line">baseLayer.contents = (__bridge <span class="keyword">id</span>)[<span class="built_in">UIImage</span> imageNamed:<span class="string">@"demo"</span>].CGImage;</div><div class="line"></div><div class="line"><span class="built_in">CAReplicatorLayer</span> *replicator = [<span class="built_in">CAReplicatorLayer</span> layer];</div><div class="line">replicator.instanceCount = <span class="number">2</span>;</div><div class="line">replicator.frame = _shadowLayer.bounds;</div><div class="line"><span class="built_in">CATransform3D</span> transform = <span class="built_in">CATransform3DIdentity</span>;</div><div class="line">transform = <span class="built_in">CATransform3DRotate</span>(transform, M_PI, <span class="number">1</span>, <span class="number">0</span>, <span class="number">0</span>);</div><div class="line">replicator.instanceTransform = transform;</div><div class="line">replicator.instanceRedOffset = <span class="number">-0.1</span>;</div><div class="line">replicator.instanceGreenOffset = <span class="number">-0.1</span>;</div><div class="line">replicator.instanceBlueOffset = <span class="number">-0.1</span>;</div><div class="line">replicator.instanceAlphaOffset = <span class="number">-0.1</span>;</div><div class="line">[replicator addSublayer:baseLayer];</div><div class="line">[_shadowLayer addSublayer:replicator];</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><ul>
+<li>有几个属性是重点：instanceDelay，instanceCount，instanceTransform，划重点，必考。通过设置不同的值，可以创造很多不同效果的动画。</li>
+<li>很多属性请注意他们的类型。比如时间，一定不能是整型的。不要犯我的低级错误。</li>
+<li>创建完baseLayer以后，一定要将它addSubLayer到CAReplicatorLayer中，否则一切都是空谈。</li>
+<li>耐心，耐心，耐心。</li>
+</ul>
+<p>以上都是自己学习时写的demo。pu出来方便大家学习。如果有错误的地方，请帮忙指正。谢谢啦。也许这是新年的最后一篇，祝自己明年会事事顺利。如果步步高升也是极好的。</p>
+<p>源码：<a href="https://github.com/lpy834994897/AnimationSimple" target="_blank" rel="external">https://github.com/lpy834994897/AnimationSimple</a></p>
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/iOS/" rel="tag"># iOS</a>
+          
+            <a href="/tags/动画/" rel="tag"># 动画</a>
+          
+        </div>
+      
+
+      
+        
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2017/03/05/CAShapeLayer-学习和实践/" rel="next" title="CAShapeLayer 学习和实践">
+                <i class="fa fa-chevron-left"></i> CAShapeLayer 学习和实践
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+        <!-- JiaThis Button BEGIN -->
+<div class="jiathis_style">
+  <a class="jiathis_button_tsina"></a>
+  <a class="jiathis_button_tqq"></a>
+  <a class="jiathis_button_weixin"></a>
+  <a class="jiathis_button_cqq"></a>
+  <a class="jiathis_button_douban"></a>
+  <a class="jiathis_button_renren"></a>
+  <a class="jiathis_button_qzone"></a>
+  <a class="jiathis_button_kaixin001"></a>
+  <a class="jiathis_button_copy"></a>
+  <a href="http://www.jiathis.com/share" class="jiathis jiathis_txt jiathis_separator jtico jtico_jiathis" target="_blank"></a>
+  <a class="jiathis_counter_style"></a>
+</div>
+<script type="text/javascript" >
+  var jiathis_config={
+    hideMore:false
+  }
+</script>
+<script type="text/javascript" src="http://v3.jiathis.com/code/jia.js" charset="utf-8"></script>
+<!-- JiaThis Button END -->
+
+      
+    </div>
+  </div>
+
+          
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+      <div class="ds-thread" data-thread-key="2017/03/05/CAReplicatorLayer-学习和实践/"
+           data-title="CAReplicatorLayer 学习和实践" data-url="https://chanshiguan.github.io/2017/03/05/CAReplicatorLayer-学习和实践/">
+      </div>
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/uploads/owen.jpg"
+               alt="陈伯君" />
+          <p class="site-author-name" itemprop="name">陈伯君</p>
+           
+              <p class="site-description motion-element" itemprop="description">虽然还没想好写点什么，但是总觉得这里放句话比较和谐</p>
+          
+        </div>
+        <nav class="site-state motion-element">
+        
+          
+            <div class="site-state-item site-state-posts">
+              <a href="/archives">
+                <span class="site-state-item-count">7</span>
+                <span class="site-state-item-name">日志</span>
+              </a>
+            </div>
+          
+
+          
+            <div class="site-state-item site-state-categories">
+              <a href="/categories">
+                <span class="site-state-item-count">4</span>
+                <span class="site-state-item-name">分类</span>
+              </a>
+            </div>
+          
+
+          
+            <div class="site-state-item site-state-tags">
+              <a href="/tags">
+                <span class="site-state-item-count">5</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/chanshiguan" target="_blank" title="GitHub">
+                  
+                    <i class="fa fa-fw fa-github"></i>
+                  
+                  GitHub
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="https://www.weibo.com/chanshijun" target="_blank" title="Weibo">
+                  
+                    <i class="fa fa-fw fa-weibo"></i>
+                  
+                  Weibo
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        
+        
+
+        
+
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#介绍"><span class="nav-number">1.</span> <span class="nav-text">介绍</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#实践"><span class="nav-number">2.</span> <span class="nav-text">实践</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-音乐震动条"><span class="nav-number">2.1.</span> <span class="nav-text">1.音乐震动条</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-三角形移动的等待指示器"><span class="nav-number">2.2.</span> <span class="nav-text">2.三角形移动的等待指示器</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-正方形移动的等待指示器"><span class="nav-number">2.3.</span> <span class="nav-text">3.正方形移动的等待指示器</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-圆形移动的等待指示器"><span class="nav-number">2.4.</span> <span class="nav-text">4.圆形移动的等待指示器</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#5-倒影的实现"><span class="nav-number">2.5.</span> <span class="nav-text">5.倒影的实现</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#总结"><span class="nav-number">3.</span> <span class="nav-text">总结</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2017</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">陈伯君</span>
+</div>
+
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Pisces
+  </a>
+</div>
+
+
+        
+
+<div class="busuanzi-count">
+
+  <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+    <span class="site-uv"><i class="fa fa-user"></i><span class="busuanzi-value" id="busuanzi_value_site_uv"></span></span>
+  
+
+  
+    <span class="site-pv"><i class="fa fa-eye"></i><span class="busuanzi-value" id="busuanzi_value_site_pv"></span></span>
+  
+  
+</div>
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+    
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.0"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.0"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.0"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.0"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.0"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.0"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.0"></script>
+
+
+
+  
+
+  
+    
+  
+
+  <script type="text/javascript">
+    var duoshuoQuery = {short_name:"chanshiguan"};
+    (function() {
+      var ds = document.createElement('script');
+      ds.type = 'text/javascript';ds.async = true;
+      ds.id = 'duoshuo-script';
+      ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+      ds.charset = 'UTF-8';
+      (document.getElementsByTagName('head')[0]
+      || document.getElementsByTagName('body')[0]).appendChild(ds);
+    })();
+  </script>
+
+  
+    
+    
+    <script src="/lib/ua-parser-js/dist/ua-parser.min.js?v=0.7.9"></script>
+    <script src="/js/src/hook-duoshuo.js"></script>
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    // Search DB path;
+    var search_path = "";
+    if (search_path.length == 0) {
+      search_path = "search.xml";
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.popup').toggle();
+    }
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+      $.ajax({
+        url: path,
+        dataType: "xml",
+        async: true,
+        success: function( xmlResponse ) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = $( "entry", xmlResponse ).map(function() {
+            return {
+              title: $( "title", this ).text(),
+              content: $("content",this).text(),
+              url: $( "url" , this).text()
+            };
+          }).get();
+          var $input = document.getElementById(search_id);
+          var $resultContent = document.getElementById(content_id);
+          $input.addEventListener('input', function(){
+            var matchcounts = 0;
+            var str='<ul class=\"search-result-list\">';
+            var keywords = this.value.trim().toLowerCase().split(/[\s\-]+/);
+            $resultContent.innerHTML = "";
+            if (this.value.trim().length > 1) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var content_index = [];
+                var data_title = data.title.trim().toLowerCase();
+                var data_content = data.content.trim().replace(/<[^>]+>/g,"").toLowerCase();
+                var data_url = decodeURIComponent(data.url);
+                var index_title = -1;
+                var index_content = -1;
+                var first_occur = -1;
+                // only match artiles with not empty titles and contents
+                if(data_title != '') {
+                  keywords.forEach(function(keyword, i) {
+                    index_title = data_title.indexOf(keyword);
+                    index_content = data_content.indexOf(keyword);
+                    if( index_title >= 0 || index_content >= 0 ){
+                      isMatch = true;
+                      if (i == 0) {
+                        first_occur = index_content;
+                      }
+                    }
+
+                  });
+                }
+                // show search results
+                if (isMatch) {
+                  matchcounts += 1;
+                  str += "<li><a href='"+ data_url +"' class='search-result-title'>"+ data_title +"</a>";
+                  var content = data.content.trim().replace(/<[^>]+>/g,"");
+                  if (first_occur >= 0) {
+                    // cut out 100 characters
+                    var start = first_occur - 20;
+                    var end = first_occur + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if(start == 0){
+                      end = 50;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    var match_content = content.substring(start, end);
+                    // highlight all keywords
+                    keywords.forEach(function(keyword){
+                      var regS = new RegExp(keyword, "gi");
+                      match_content = match_content.replace(regS, "<b class=\"search-keyword\">"+keyword+"</b>");
+                    });
+
+                    str += "<p class=\"search-result\">" + match_content +"...</p>"
+                  }
+                  str += "</li>";
+                }
+              })};
+            str += "</ul>";
+            if (matchcounts == 0) { str = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>' }
+            if (keywords == "") { str = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>' }
+            $resultContent.innerHTML = str;
+          });
+          proceedsearch();
+        }
+      });}
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched == false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(function(e){
+      $('.popup').hide();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    });
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+  </script>
+
+
+  
+  
+
+
+  
+
+  
+  <script src="https://cdn1.lncld.net/static/js/av-core-mini-0.6.1.js"></script>
+  <script>AV.initialize("h1KV2mICuIrTtY7eLkLakOL7-gzGzoHsz", "IL5S2hJTECBxNCPglnWLJY1w");</script>
+  <script>
+    function showTime(Counter) {
+      var query = new AV.Query(Counter);
+      var entries = [];
+      var $visitors = $(".leancloud_visitors");
+
+      $visitors.each(function () {
+        entries.push( $(this).attr("id").trim() );
+      });
+
+      query.containedIn('url', entries);
+      query.find()
+        .done(function (results) {
+          var COUNT_CONTAINER_REF = '.leancloud-visitors-count';
+
+          if (results.length === 0) {
+            $visitors.find(COUNT_CONTAINER_REF).text(0);
+            return;
+          }
+
+          for (var i = 0; i < results.length; i++) {
+            var item = results[i];
+            var url = item.get('url');
+            var time = item.get('time');
+            var element = document.getElementById(url);
+
+            $(element).find(COUNT_CONTAINER_REF).text(time);
+          }
+          for(var i = 0; i < entries.length; i++) {
+            var url = entries[i];
+            var element = document.getElementById(url);
+            var countSpan = $(element).find(COUNT_CONTAINER_REF);
+            if( countSpan.text() == '') {
+              countSpan.text(0);
+            }
+          }
+        })
+        .fail(function (object, error) {
+          console.log("Error: " + error.code + " " + error.message);
+        });
+    }
+
+    function addCount(Counter) {
+      var $visitors = $(".leancloud_visitors");
+      var url = $visitors.attr('id').trim();
+      var title = $visitors.attr('data-flag-title').trim();
+      var query = new AV.Query(Counter);
+
+      query.equalTo("url", url);
+      query.find({
+        success: function(results) {
+          if (results.length > 0) {
+            var counter = results[0];
+            counter.fetchWhenSave(true);
+            counter.increment("time");
+            counter.save(null, {
+              success: function(counter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(counter.get('time'));
+              },
+              error: function(counter, error) {
+                console.log('Failed to save Visitor num, with error message: ' + error.message);
+              }
+            });
+          } else {
+            var newcounter = new Counter();
+            /* Set ACL */
+            var acl = new AV.ACL();
+            acl.setPublicReadAccess(true);
+            acl.setPublicWriteAccess(true);
+            newcounter.setACL(acl);
+            /* End Set ACL */
+            newcounter.set("title", title);
+            newcounter.set("url", url);
+            newcounter.set("time", 1);
+            newcounter.save(null, {
+              success: function(newcounter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(newcounter.get('time'));
+              },
+              error: function(newcounter, error) {
+                console.log('Failed to create');
+              }
+            });
+          }
+        },
+        error: function(error) {
+          console.log('Error:' + error.code + " " + error.message);
+        }
+      });
+    }
+
+    $(function() {
+      var Counter = AV.Object.extend("Counter");
+      if ($('.leancloud_visitors').length == 1) {
+        addCount(Counter);
+      } else if ($('.post-title-link').length > 1) {
+        showTime(Counter);
+      }
+    });
+  </script>
+
+
+
+  
+<script>
+(function(){
+    var bp = document.createElement('script');
+    var curProtocol = window.location.protocol.split(':')[0];
+    if (curProtocol === 'https') {
+        bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';        
+    }
+    else {
+        bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+    }
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(bp, s);
+})();
+</script>
+
+
+  
+
+
+  
+
+</body>
+</html>

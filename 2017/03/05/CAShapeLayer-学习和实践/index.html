@@ -71,7 +71,7 @@
 <link href="/css/main.css?v=5.1.0" rel="stylesheet" type="text/css" />
 
 
-  <meta name="keywords" content="hexo," />
+  <meta name="keywords" content="iOS,动画," />
 
 
 
@@ -87,22 +87,26 @@
 
 
 
-<meta name="description" content="作为一个iOS研发已有3年多，渐渐发现应该写点东西。不仅能让自己深入了解，还能给他人留下一点财富。所以就在简书和CSDN写了一些文章，效果还不错，收获了很多喜欢和粉丝。不过心里一直有个结：为什么不自己搭建一个博客呢？
-于是就有了今天的这篇文章。在这里记录一下安装的过程以及遇到的问题。
-安装我是根据一篇博客来建立博客的。在此祭出那篇伟大的博客。5分钟 搭建免费个人博客.那么这里面我就不赘述了。我用的">
+<meta name="description" content="介绍CAShapeLayer是一个通过矢量图形而不是bitmap来绘制的图层子类。你指定诸如颜色和线宽等属性，用CGPath来定义想要绘制的图形，最后CAShapeLayer就自动渲染出来了。当然，你也可以用Core Graphics直接向原始的CALyer的内容中绘制一个路径，相比直下，使用CAShapeLayer有以下一些优点：
+
+渲染快速。CAShapeLayer使用了硬件加速，绘制同一图形">
 <meta property="og:type" content="article">
-<meta property="og:title" content="开启hexo之旅">
-<meta property="og:url" content="https://chanshiguan.github.io/2017/03/04/install-hexo/index.html">
+<meta property="og:title" content="CAShapeLayer 学习和实践">
+<meta property="og:url" content="https://chanshiguan.github.io/2017/03/05/CAShapeLayer-学习和实践/index.html">
 <meta property="og:site_name" content="陈伯君's 博客">
-<meta property="og:description" content="作为一个iOS研发已有3年多，渐渐发现应该写点东西。不仅能让自己深入了解，还能给他人留下一点财富。所以就在简书和CSDN写了一些文章，效果还不错，收获了很多喜欢和粉丝。不过心里一直有个结：为什么不自己搭建一个博客呢？
-于是就有了今天的这篇文章。在这里记录一下安装的过程以及遇到的问题。
-安装我是根据一篇博客来建立博客的。在此祭出那篇伟大的博客。5分钟 搭建免费个人博客.那么这里面我就不赘述了。我用的">
-<meta property="og:updated_time" content="2017-03-04T08:02:23.000Z">
+<meta property="og:description" content="介绍CAShapeLayer是一个通过矢量图形而不是bitmap来绘制的图层子类。你指定诸如颜色和线宽等属性，用CGPath来定义想要绘制的图形，最后CAShapeLayer就自动渲染出来了。当然，你也可以用Core Graphics直接向原始的CALyer的内容中绘制一个路径，相比直下，使用CAShapeLayer有以下一些优点：
+
+渲染快速。CAShapeLayer使用了硬件加速，绘制同一图形">
+<meta property="og:image" content="http://upload-images.jianshu.io/upload_images/937424-746bb01ee0a7f650.gif?imageMogr2/auto-orient/strip">
+<meta property="og:image" content="http://upload-images.jianshu.io/upload_images/937424-d9d1218bc2283286.gif?imageMogr2/auto-orient/strip">
+<meta property="og:image" content="http://upload-images.jianshu.io/upload_images/937424-a2ce51c649e77261.gif?imageMogr2/auto-orient/strip">
+<meta property="og:updated_time" content="2017-03-04T10:39:35.000Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="开启hexo之旅">
-<meta name="twitter:description" content="作为一个iOS研发已有3年多，渐渐发现应该写点东西。不仅能让自己深入了解，还能给他人留下一点财富。所以就在简书和CSDN写了一些文章，效果还不错，收获了很多喜欢和粉丝。不过心里一直有个结：为什么不自己搭建一个博客呢？
-于是就有了今天的这篇文章。在这里记录一下安装的过程以及遇到的问题。
-安装我是根据一篇博客来建立博客的。在此祭出那篇伟大的博客。5分钟 搭建免费个人博客.那么这里面我就不赘述了。我用的">
+<meta name="twitter:title" content="CAShapeLayer 学习和实践">
+<meta name="twitter:description" content="介绍CAShapeLayer是一个通过矢量图形而不是bitmap来绘制的图层子类。你指定诸如颜色和线宽等属性，用CGPath来定义想要绘制的图形，最后CAShapeLayer就自动渲染出来了。当然，你也可以用Core Graphics直接向原始的CALyer的内容中绘制一个路径，相比直下，使用CAShapeLayer有以下一些优点：
+
+渲染快速。CAShapeLayer使用了硬件加速，绘制同一图形">
+<meta name="twitter:image" content="http://upload-images.jianshu.io/upload_images/937424-746bb01ee0a7f650.gif?imageMogr2/auto-orient/strip">
 
 
 
@@ -130,13 +134,13 @@
 
 
 
-  <link rel="canonical" href="https://chanshiguan.github.io/2017/03/04/install-hexo/"/>
+  <link rel="canonical" href="https://chanshiguan.github.io/2017/03/05/CAShapeLayer-学习和实践/"/>
 
 
 
 
 
-  <title> 开启hexo之旅 | 陈伯君's 博客 </title>
+  <title> CAShapeLayer 学习和实践 | 陈伯君's 博客 </title>
 </head>
 
 <body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
@@ -309,7 +313,7 @@
   
 
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="https://chanshiguan.github.io/2017/03/04/install-hexo/">
+    <link itemprop="mainEntityOfPage" href="https://chanshiguan.github.io/2017/03/05/CAShapeLayer-学习和实践/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="陈伯君">
@@ -330,7 +334,7 @@
             
             
               
-                开启hexo之旅
+                CAShapeLayer 学习和实践
               
             
           </h1>
@@ -345,7 +349,7 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-03-04T19:50:50+08:00">
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-03-05T02:23:20+08:00">
                 2017-03-04
               </time>
             
@@ -368,8 +372,8 @@
               
               
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/hexo/" itemprop="url" rel="index">
-                    <span itemprop="name">hexo</span>
+                  <a href="/categories/iOS开发/" itemprop="url" rel="index">
+                    <span itemprop="name">iOS开发</span>
                   </a>
                 </span>
 
@@ -386,8 +390,8 @@
                 <span class="post-meta-item-icon">
                   <i class="fa fa-comment-o"></i>
                 </span>
-                <a href="/2017/03/04/install-hexo/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count ds-thread-count" data-thread-key="2017/03/04/install-hexo/" itemprop="commentCount"></span>
+                <a href="/2017/03/05/CAShapeLayer-学习和实践/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2017/03/05/CAShapeLayer-学习和实践/" itemprop="commentCount"></span>
                 </a>
               </span>
             
@@ -395,7 +399,7 @@
 
           
           
-             <span id="/2017/03/04/install-hexo/" class="leancloud_visitors" data-flag-title="开启hexo之旅">
+             <span id="/2017/03/05/CAShapeLayer-学习和实践/" class="leancloud_visitors" data-flag-title="CAShapeLayer 学习和实践">
                <span class="post-meta-divider">|</span>
                <span class="post-meta-item-icon">
                  <i class="fa fa-eye"></i>
@@ -429,70 +433,30 @@
       
 
       
-        <p>作为一个iOS研发已有3年多，渐渐发现应该写点东西。不仅能让自己深入了解，还能给他人留下一点财富。所以就在简书和CSDN写了一些文章，效果还不错，收获了很多喜欢和粉丝。不过心里一直有个结：<strong>为什么不自己搭建一个博客呢？</strong></p>
-<p>于是就有了今天的这篇文章。在这里记录一下安装的过程以及遇到的问题。</p>
-<h2 id="安装"><a href="#安装" class="headerlink" title="安装"></a>安装</h2><p>我是根据一篇博客来建立博客的。在此祭出那篇伟大的博客。<a href="http://www.jianshu.com/p/4eaddcbe4d12" target="_blank" rel="external">5分钟 搭建免费个人博客</a>.那么这里面我就不赘述了。我用的是nexT.Pisces的主题。</p>
+        <h2 id="介绍"><a href="#介绍" class="headerlink" title="介绍"></a>介绍</h2><p>CAShapeLayer是一个通过矢量图形而不是bitmap来绘制的图层子类。你指定诸如颜色和线宽等属性，用CGPath来定义想要绘制的图形，最后CAShapeLayer就自动渲染出来了。当然，你也可以用Core Graphics直接向原始的CALyer的内容中绘制一个路径，相比直下，使用CAShapeLayer有以下一些优点：</p>
 <ul>
-<li><a href="https://hexo.io/themes/" target="_blank" rel="external">更多主题</a> </li>
-<li><a href="https://hexo.io/plugins/" target="_blank" rel="external">更多插件</a></li>
+<li>渲染快速。CAShapeLayer使用了硬件加速，绘制同一图形会比用Core Graphics快很多。</li>
+<li>高效使用内存。一个CAShapeLayer不需要像普通CALayer一样创建一个寄宿图形，所以无论有多大，都不会占用太多的内存。</li>
+<li>不会被图层边界剪裁掉。一个CAShapeLayer可以在边界之外绘制。你的图层路径不会像在使用Core Graphics的普通CALayer一样被剪裁掉（如我们在第二章所见）。</li>
+<li>不会出现像素化。当你给CAShapeLayer做3D变换时，它不像一个有寄宿图的普通图层一样变得像素化。</li>
 </ul>
-<h2 id="配置"><a href="#配置" class="headerlink" title="配置"></a>配置</h2><p>其实安装真的很容易，很无脑。很快我的博客就建立起来了。但是。。。但可是。。。我是个颜控啊，不折腾一下主题、“美颜”一下还对的起我么？于是我找到了我心仪的主题。马上更换上。</p>
-<h3 id="更换主题"><a href="#更换主题" class="headerlink" title="更换主题"></a>更换主题</h3><p>1.进入你的博客根目录。<br>2.利用<code>git clone</code> 命令将主题拷贝到目录下的<code>themes</code>文件夹中,就像这样：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">git clone https://github.com/iissnan/hexo-theme-next themes/next</div></pre></td></tr></table></figure></p>
-<h3 id="主目录结构"><a href="#主目录结构" class="headerlink" title="主目录结构"></a>主目录结构</h3><ul>
-<li><strong>_config.yml</strong>：我叫它站点配置文件，他负责这个站点所有配置的东西。</li>
-<li><strong>scaffolds</strong>：这个我叫他模板。它里面放了一些模板文件。你可以修改里面的内容，这样在初始化新建博客的时候，里面的内容都会显示在新建的文件中，方便省时。</li>
-<li><strong>source</strong>：资源文件，最让我头大的文件夹。里面可以放任何资源，比如我正在写的博客、图片、视频、音乐等等吧。这里面有故事，稍后咱倒点茶水好好说说这个让我这个小白欲罢不能的它。</li>
-<li><strong>themes</strong>：这个是用来放主题的。至少我是这么理解的。</li>
-<li><strong>其他的</strong>：不要问我，我也不知道。因为我也只用到了以上这么多。</li>
-</ul>
-<h3 id="主题目录"><a href="#主题目录" class="headerlink" title="主题目录"></a>主题目录</h3><ul>
-<li><strong>_config.yml</strong>：我叫它站点配置文件，他负责这个站点所有配置的东西。</li>
-<li><p><strong>languages</strong>：语言模块，你要适配各种语言版本，一定要修改这里。修改对应的文件，例：添加中文说明，请修改<code>zh-Hans.yml</code>。</p>
-</li>
-<li><p><strong>source</strong>：如果要修改主题里面的资源，请操作这个文件夹。</p>
-</li>
-<li><strong>layout</strong>：负责页面布局。至少我是这么认为的。不对的话请指正，先谢谢啦。</li>
-</ul>
-<h3 id="插件-amp-功能"><a href="#插件-amp-功能" class="headerlink" title="插件&amp;功能"></a>插件&amp;功能</h3><p>hexo能集成的插件选择非常多，我仅仅用到了几个，不过尽可能把我知道的列出来，方便大家使用吧：</p>
-<ul>
-<li><a href="http://tongji.baidu.com" target="_blank" rel="external">百度统计</a></li>
-<li><a href="http://duoshuo.com" target="_blank" rel="external">多说评论</a></li>
-<li><a href="https://notes.wanghao.work/2015-10-21-为NexT主题添加文章阅读量统计功能.html" target="_blank" rel="external">阅读次数统计</a></li>
-<li><a href="http://theme-next.iissnan.com/third-party-services.html#algolia-search" target="_blank" rel="external">Algolia 搜索</a></li>
-<li><a href="http://theme-next.iissnan.com/theme-settings.html" target="_blank" rel="external">RSS</a></li>
-<li><a href="http://theme-next.iissnan.com/theme-settings.html#author-sites" target="_blank" rel="external">侧边栏社交链接</a></li>
-<li><a href="https://github.com/iissnan/hexo-theme-next/pull/687" target="_blank" rel="external">开启打赏功能</a></li>
-<li><a href="https://github.com/iissnan/hexo-theme-next/pull/250" target="_blank" rel="external">友情链接</a></li>
-<li><a href="https://github.com/iissnan/hexo-theme-next/pull/126" target="_blank" rel="external">腾讯公益404页面</a></li>
-<li><a href="https://github.com/iissnan/hexo-theme-next/pull/788" target="_blank" rel="external">订阅微信公众号</a></li>
-<li><a href="http://theme-next.iissnan.com/third-party-services.html#others" target="_blank" rel="external">MathJax:NexT 借助于 MathJax 来显示数学公式，此选项默认关闭。</a></li>
-<li><a href="https://github.com/iissnan/hexo-theme-next/pull/126" target="_blank" rel="external">多说热评文章</a></li>
-</ul>
-<h2 id="问题一览"><a href="#问题一览" class="headerlink" title="问题一览"></a>问题一览</h2><h3 id="博客里面的文章应该写在那个文件夹下？分类、标签、归档里面的博客写在哪呢？"><a href="#博客里面的文章应该写在那个文件夹下？分类、标签、归档里面的博客写在哪呢？" class="headerlink" title="博客里面的文章应该写在那个文件夹下？分类、标签、归档里面的博客写在哪呢？"></a>博客里面的文章应该写在那个文件夹下？分类、标签、归档里面的博客写在哪呢？</h3><p><strong>答</strong>：这是我搭建博客困扰我最长时间的问题。根据<a href="http://www.jianshu.com/p/4eaddcbe4d12" target="_blank" rel="external">5分钟 搭建免费个人博客</a>这篇文章写的，写博客应该在<code>source/_posts</code>文件夹中。那么根据这个思路来捋的话，那么分类下的文章就应该写在分类文件夹下，标签就写在标签文件夹下。然而，并不是。</p>
-<p><strong>这里面明确一下几个概念。</strong></p>
-<ul>
-<li>分类：实际上就是对博客模块里面的文章进行分类。</li>
-<li>标签：对文章设置不同的标签，方便搜索。类似于小分类。不过标记标签的对象也是对博客模块下的文章</li>
-</ul>
-<p>那么这么说应该就可以懂了。博客只能在<code>source/_posts</code>下创建。（至少最开始是这样的。当然你也可以自己去设置，不完全绝对）。</p>
-<h3 id="那么博客里面的文章如何出现在标签和分类模块里面呢？"><a href="#那么博客里面的文章如何出现在标签和分类模块里面呢？" class="headerlink" title="那么博客里面的文章如何出现在标签和分类模块里面呢？"></a>那么博客里面的文章如何出现在标签和分类模块里面呢？</h3><p><strong>答</strong>：<br>1.在终端窗口下，定位到 Hexo 站点目录下。使用 hexo new page 新建一个页面，命名为 tags ：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">$ cd your-hexo-site</div><div class="line">$ hexo new page tags</div></pre></td></tr></table></figure>
-<p>2.编辑刚新建的页面，将页面的类型设置为 tags ，主题将自动为这个页面显示标签云。页面内容如下:</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">title: 标签</div><div class="line">date: 2014-12-22 12:39:04</div><div class="line">type: &quot;tags&quot;</div><div class="line">---</div></pre></td></tr></table></figure>
-<p>3.在菜单中添加链接。编辑 主题配置文件 ， 添加 tags 到 menu 中，如下:</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">menu:</div><div class="line">  home: /</div><div class="line">  archives: /archives</div><div class="line">  tags: /tags</div></pre></td></tr></table></figure>
-<p>4.创建博客，并修改里面的属性,这样就可以显示在分类和标签里面了。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ hexo new test</div></pre></td></tr></table></figure>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">---</div><div class="line">title: test</div><div class="line">date: 2017-03-04 11:50:50</div><div class="line">tags: hexo</div><div class="line">category: hexo</div><div class="line">---</div></pre></td></tr></table></figure>
-<p>5.运行一下看看吧<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ hexo s</div></pre></td></tr></table></figure></p>
-<h3 id="文章内如何显示目录"><a href="#文章内如何显示目录" class="headerlink" title="文章内如何显示目录"></a>文章内如何显示目录</h3><p><strong>答</strong>：这个问题是正在写的时候遇到的。当你使用<code>#</code>来设置标题的时候，运行以后发现，为毛没有目录？我也尝试使用<code>&lt;!-- toc --&gt;</code>但是也失败了。后来我将<code>#</code>和标题用空格隔开后，发现目录出现了（我只想调整一下格式。让代码看起来更美观）。<mark>还有就是设置标题的时候，主题会自动为你设置目录编号，你不用自己去设置</mark></p>
-<h3 id="添加页面footer位置，访问人数和浏览次数"><a href="#添加页面footer位置，访问人数和浏览次数" class="headerlink" title="添加页面footer位置，访问人数和浏览次数"></a>添加页面footer位置，访问人数和浏览次数</h3><p><strong>答</strong>：如果你用的是nexT的主题，那么修改<code>themes/主题/_cingif.yml</code>里面的<code>busuanzi</code>属性开启，设置为ture。<br>但是如果你不是next主题，那么你就需要修改文件的代码。这里附上<a href="https://github.com/iissnan/hexo-theme-next/issues/801" target="_blank" rel="external">教程</a>.</p>
-<h3 id="添加自定义模块"><a href="#添加自定义模块" class="headerlink" title="添加自定义模块"></a>添加自定义模块</h3><p><strong>答</strong>：操作模块，不光要修改<code>_config.yml</code>文件中的menu选项，至少next主题不行（之前试过onevcat的主题，他的主题就可以直接添加）。还要在对应的languages下的文件添加对应语言。当然还要修改显示的图标，如果不设置，就会默认显示问号。<strong>请注意键值（如 home）的大小写要严格匹配</strong></p>
-<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>以上就是我建立个人博客的过程以及问题。希望晒出来可以帮助更多的人。其实看再多大神的博客，都不如看几遍官方文档。</p>
-<ul>
-<li><a href="http://theme-next.iissnan.com" target="_blank" rel="external">NexT主题官方主页</a></li>
-<li><a href="https://hexo.io" target="_blank" rel="external">hexo官方主页</a></li>
-</ul>
+<p>其实个人理解就是比CALayer更自由，高度自定义化。</p>
+<h2 id="实践"><a href="#实践" class="headerlink" title="实践"></a>实践</h2><p>现在我们要实现这样一个进度条，先看看效果。<br><img src="http://upload-images.jianshu.io/upload_images/937424-746bb01ee0a7f650.gif?imageMogr2/auto-orient/strip" alt="圆形进度条.gif"></p>
+<h3 id="思路"><a href="#思路" class="headerlink" title="思路"></a>思路</h3><ol>
+<li>创建一个CAShapeLayer作为底部的圆环，暂且命名为：_trackLayer</li>
+<li>创建一个CAShapeLayer作为进度条，暂且命名为：_progressLayer</li>
+<li>创建一个动画来控制_progressLayer变化</li>
+</ol>
+<figure class="highlight objc"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div></pre></td><td class="code"><pre><div class="line"><span class="class"><span class="keyword">@interface</span> <span class="title">CircularProgressViewController</span> ()</span></div><div class="line">&#123;</div><div class="line"><span class="built_in">CAShapeLayer</span> *_trackLayer;  </div><div class="line"><span class="built_in">CAShapeLayer</span> *_progressLayer;</div><div class="line">&#125;</div><div class="line">- (<span class="keyword">void</span>)viewDidAppear:(<span class="built_in">BOOL</span>)animated</div><div class="line">&#123;</div><div class="line">[<span class="keyword">super</span> viewDidAppear:animated];</div><div class="line"></div><div class="line"><span class="built_in">CGFloat</span> ViewWith = <span class="built_in">CGRectGetWidth</span>(<span class="keyword">self</span>.view.frame);</div><div class="line"><span class="comment">//获取中心点</span></div><div class="line"><span class="built_in">CGPoint</span> position = <span class="keyword">self</span>.view.center;</div><div class="line"><span class="comment">//设置layer的path。需要注意的是：ArcCenter是针对下面layer你设置位置之后的中心点。</span></div><div class="line"><span class="comment">//比如说： _trackLayer.bounds 设置的是（0，0，200，200）ArcCenter是（0，0）。那么圆会在_trackLayer的左上角，而不是当前页面的左上角。如果是（100，100），那么圆就会出现在layer的中心点。这个很容易搞混</span></div><div class="line"><span class="comment">//所以说，他的位置是相对于父视图的。</span></div><div class="line"><span class="built_in">UIBezierPath</span> *path = [<span class="built_in">UIBezierPath</span> bezierPathWithArcCenter:<span class="built_in">CGPointMake</span>(ViewWith / <span class="number">2</span>, ViewWith / <span class="number">2</span>) radius:ViewWith / <span class="number">2</span> - <span class="number">10</span> startAngle:- M_PI_2 endAngle:M_PI_2 * <span class="number">3</span> clockwise:<span class="literal">YES</span>];</div><div class="line"></div><div class="line">_trackLayer = [<span class="built_in">CAShapeLayer</span> layer];</div><div class="line">_trackLayer.bounds = <span class="built_in">CGRectMake</span>(<span class="number">0</span>, <span class="number">0</span>, ViewWith, ViewWith);</div><div class="line">_trackLayer.position = position;</div><div class="line">_trackLayer.lineCap = kCALineCapRound;  <span class="comment">//线闭合时的样式</span></div><div class="line">_trackLayer.strokeColor = [<span class="built_in">UIColor</span> greenColor].CGColor;  <span class="comment">//轨迹颜色</span></div><div class="line">_trackLayer.fillColor = [<span class="built_in">UIColor</span> clearColor].CGColor;  <span class="comment">//空心颜色</span></div><div class="line">_trackLayer.lineWidth = <span class="number">10</span>;  <span class="comment">//线的粗细</span></div><div class="line">_trackLayer.path = path.CGPath; </div><div class="line">[<span class="keyword">self</span>.view.layer addSublayer:_trackLayer];</div><div class="line"></div><div class="line">_progressLayer = [<span class="built_in">CAShapeLayer</span> layer];</div><div class="line">_progressLayer.bounds = <span class="built_in">CGRectMake</span>(<span class="number">0</span>, <span class="number">0</span>, ViewWith, ViewWith);</div><div class="line">_progressLayer.position = <span class="built_in">CGPointMake</span>(<span class="built_in">CGRectGetWidth</span>(_trackLayer.bounds) / <span class="number">2</span>, <span class="built_in">CGRectGetWidth</span>(_trackLayer.bounds) / <span class="number">2</span>);</div><div class="line">_progressLayer.strokeColor = [<span class="built_in">UIColor</span> redColor].CGColor;</div><div class="line">_progressLayer.fillColor = [<span class="built_in">UIColor</span> clearColor].CGColor;</div><div class="line">_progressLayer.lineCap = kCALineCapRound;</div><div class="line">_progressLayer.lineWidth = <span class="number">10</span>;</div><div class="line">_progressLayer.path = path.CGPath;</div><div class="line">_progressLayer.strokeEnd = <span class="number">0</span>;</div><div class="line">[_trackLayer addSublayer:_progressLayer];</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>那么截止到这里，你应该在屏幕上的正中间看到一个绿色的轨迹了。那么我们设置的红色的进度条呢？对比一下_trackLayer和_progressLayer。_progressLayer我们多设置了一个<strong>strokeEnd</strong>属性。下面我们要针对这个属性处理动画。</p>
+<figure class="highlight objc"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line"><span class="built_in">CABasicAnimation</span> *animation = [<span class="built_in">CABasicAnimation</span> animationWithKeyPath:<span class="string">@"strokeEnd"</span>];</div><div class="line">animation.timingFunction = [<span class="built_in">CAMediaTimingFunction</span> functionWithName:kCAMediaTimingFunctionEaseInEaseOut];  <span class="comment">// 展现动画的方式。使动画看起来更加逼真。</span></div><div class="line">animation.duration = <span class="number">2</span>;  <span class="comment">//动画时间</span></div><div class="line">animation.fromValue = <span class="number">0</span>;  <span class="comment">//动画起始值</span></div><div class="line">animation.toValue = @<span class="number">1</span>;  <span class="comment">//动画目标值</span></div><div class="line">animation.fillMode = kCAFillModeForwards;  <span class="comment">//设置动画结束后依然显示结束后的状态</span></div><div class="line">animation.removedOnCompletion = <span class="literal">NO</span>;  </div><div class="line">[_progressLayer addAnimation:animation forKey:<span class="literal">nil</span>];</div></pre></td></tr></table></figure>
+<p>那么截止到这里一个完整的圆形进度条就做完了。</p>
+<h2 id="拓展一：实现一个彩色的进度条"><a href="#拓展一：实现一个彩色的进度条" class="headerlink" title="拓展一：实现一个彩色的进度条"></a>拓展一：实现一个彩色的进度条</h2><p><img src="http://upload-images.jianshu.io/upload_images/937424-d9d1218bc2283286.gif?imageMogr2/auto-orient/strip" alt="彩色进度条.gif"><br>将_progressLayer从当前view移除<br><figure class="highlight objc"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">[_progressLayer addAnimation:animation forKey:<span class="literal">nil</span>];</div></pre></td></tr></table></figure></p>
+<p>并在动画代码之前加上这段代码，就可以实现彩色的进度条。<br><figure class="highlight objc"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"><span class="built_in">CAGradientLayer</span> *colorLayer = [<span class="built_in">CAGradientLayer</span> layer];</div><div class="line">colorLayer.frame = _progressLayer.frame;</div><div class="line">[colorLayer setColors:@[(<span class="keyword">id</span>)[<span class="built_in">UIColor</span> blueColor].CGColor,(<span class="keyword">id</span>)[<span class="built_in">UIColor</span> yellowColor].CGColor,(<span class="keyword">id</span>)[<span class="built_in">UIColor</span> greenColor].CGColor]];</div><div class="line">colorLayer.mask = _progressLayer;</div><div class="line">[_trackLayer addSublayer:colorLayer];</div></pre></td></tr></table></figure></p>
+<h2 id="拓展二：实现一个锦上添花的效果。"><a href="#拓展二：实现一个锦上添花的效果。" class="headerlink" title="拓展二：实现一个锦上添花的效果。"></a>拓展二：实现一个锦上添花的效果。</h2><p><img src="http://upload-images.jianshu.io/upload_images/937424-a2ce51c649e77261.gif?imageMogr2/auto-orient/strip" alt="更为炫酷.gif"><br>要实现上面图片的动画，则需要使用动画组。下面直接上代码。<br><figure class="highlight objc"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div></pre></td><td class="code"><pre><div class="line"><span class="built_in">CABasicAnimation</span> *animation1 = [<span class="built_in">CABasicAnimation</span> animationWithKeyPath:<span class="string">@"strokeEnd"</span>];</div><div class="line">animation1.timingFunction = [<span class="built_in">CAMediaTimingFunction</span> functionWithName:kCAMediaTimingFunctionEaseInEaseOut];</div><div class="line">animation1.duration = <span class="number">2</span>;</div><div class="line">animation1.fromValue = <span class="number">0</span>;</div><div class="line">animation1.toValue = @<span class="number">1</span>;</div><div class="line">animation1.fillMode = kCAFillModeForwards;</div><div class="line">animation1.removedOnCompletion = <span class="literal">NO</span>;</div><div class="line"></div><div class="line"><span class="built_in">CABasicAnimation</span> *animation2 = [<span class="built_in">CABasicAnimation</span> animationWithKeyPath:<span class="string">@"strokeStart"</span>];</div><div class="line">animation2.timingFunction = [<span class="built_in">CAMediaTimingFunction</span> functionWithName:kCAMediaTimingFunctionEaseInEaseOut];</div><div class="line">animation2.duration = <span class="number">2</span>;</div><div class="line">animation2.fromValue = <span class="number">0</span>;</div><div class="line">animation2.toValue = @<span class="number">0.25</span>;</div><div class="line">animation2.fillMode = kCAFillModeForwards;</div><div class="line">animation2.removedOnCompletion = <span class="literal">NO</span>;</div><div class="line"></div><div class="line"><span class="built_in">CABasicAnimation</span> *animation3 = [<span class="built_in">CABasicAnimation</span> animationWithKeyPath:<span class="string">@"strokeStart"</span>];</div><div class="line">animation3.timingFunction = [<span class="built_in">CAMediaTimingFunction</span> functionWithName:kCAMediaTimingFunctionEaseInEaseOut];</div><div class="line">animation3.beginTime = <span class="number">1.5</span>;</div><div class="line">animation3.duration = <span class="number">1</span>;</div><div class="line">animation3.fromValue = @<span class="number">0.25</span>;</div><div class="line">animation3.toValue = @<span class="number">1</span>;</div><div class="line">animation3.fillMode = kCAFillModeForwards;</div><div class="line">animation3.removedOnCompletion = <span class="literal">NO</span>;</div><div class="line"></div><div class="line"><span class="built_in">CAAnimationGroup</span> *group = [<span class="built_in">CAAnimationGroup</span> animation];</div><div class="line">group.animations = @[animation1,animation2,animation3];</div><div class="line">group.duration = <span class="number">2.5</span>;</div><div class="line">group.repeatCount = MAXFLOAT;</div><div class="line">[_progressLayer addAnimation:group forKey:<span class="literal">nil</span>];</div></pre></td></tr></table></figure></p>
+<p>这里面有个大坑就是动画效果一定要选择<strong>kCAMediaTimingFunctionEaseInEaseOut</strong>，划重点，必考。</p>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>其实动画很简单，就是分解每一步动作。实现需要耐心和恒心。以上资料，我研究了三天。是难也好，笨也罢。坚持住吧。</p>
+<p>源码：<a href="https://github.com/lpy834994897/AnimationSimple" target="_blank" rel="external">https://github.com/lpy834994897/AnimationSimple</a></p>
 
       
     </div>
@@ -516,7 +480,9 @@
       
         <div class="post-tags">
           
-            <a href="/tags/hexo/" rel="tag"># hexo</a>
+            <a href="/tags/iOS/" rel="tag"># iOS</a>
+          
+            <a href="/tags/动画/" rel="tag"># 动画</a>
           
         </div>
       
@@ -529,14 +495,18 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
+              <a href="/2017/03/05/iOS-跳转到第三方应用或者设置页面/" rel="next" title="iOS 跳转到第三方应用或者设置页面">
+                <i class="fa fa-chevron-left"></i> iOS 跳转到第三方应用或者设置页面
+              </a>
+            
           </div>
 
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
             
-              <a href="/2017/03/05/macOS-不明开发者/" rel="prev" title="macOS 10.12 不明开发者的程序无法安装 解决办法">
-                macOS 10.12 不明开发者的程序无法安装 解决办法 <i class="fa fa-chevron-right"></i>
+              <a href="/2017/03/05/CAReplicatorLayer-学习和实践/" rel="prev" title="CAReplicatorLayer 学习和实践">
+                CAReplicatorLayer 学习和实践 <i class="fa fa-chevron-right"></i>
               </a>
             
           </div>
@@ -586,8 +556,8 @@
           
   <div class="comments" id="comments">
     
-      <div class="ds-thread" data-thread-key="2017/03/04/install-hexo/"
-           data-title="开启hexo之旅" data-url="https://chanshiguan.github.io/2017/03/04/install-hexo/">
+      <div class="ds-thread" data-thread-key="2017/03/05/CAShapeLayer-学习和实践/"
+           data-title="CAShapeLayer 学习和实践" data-url="https://chanshiguan.github.io/2017/03/05/CAShapeLayer-学习和实践/">
       </div>
     
   </div>
@@ -709,7 +679,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#安装"><span class="nav-number">1.</span> <span class="nav-text">安装</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#配置"><span class="nav-number">2.</span> <span class="nav-text">配置</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#更换主题"><span class="nav-number">2.1.</span> <span class="nav-text">更换主题</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#主目录结构"><span class="nav-number">2.2.</span> <span class="nav-text">主目录结构</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#主题目录"><span class="nav-number">2.3.</span> <span class="nav-text">主题目录</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#插件-amp-功能"><span class="nav-number">2.4.</span> <span class="nav-text">插件&功能</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#问题一览"><span class="nav-number">3.</span> <span class="nav-text">问题一览</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#博客里面的文章应该写在那个文件夹下？分类、标签、归档里面的博客写在哪呢？"><span class="nav-number">3.1.</span> <span class="nav-text">博客里面的文章应该写在那个文件夹下？分类、标签、归档里面的博客写在哪呢？</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#那么博客里面的文章如何出现在标签和分类模块里面呢？"><span class="nav-number">3.2.</span> <span class="nav-text">那么博客里面的文章如何出现在标签和分类模块里面呢？</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#文章内如何显示目录"><span class="nav-number">3.3.</span> <span class="nav-text">文章内如何显示目录</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#添加页面footer位置，访问人数和浏览次数"><span class="nav-number">3.4.</span> <span class="nav-text">添加页面footer位置，访问人数和浏览次数</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#添加自定义模块"><span class="nav-number">3.5.</span> <span class="nav-text">添加自定义模块</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#总结"><span class="nav-number">4.</span> <span class="nav-text">总结</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#介绍"><span class="nav-number">1.</span> <span class="nav-text">介绍</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#实践"><span class="nav-number">2.</span> <span class="nav-text">实践</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#思路"><span class="nav-number">2.1.</span> <span class="nav-text">思路</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#拓展一：实现一个彩色的进度条"><span class="nav-number">3.</span> <span class="nav-text">拓展一：实现一个彩色的进度条</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#拓展二：实现一个锦上添花的效果。"><span class="nav-number">4.</span> <span class="nav-text">拓展二：实现一个锦上添花的效果。</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#总结"><span class="nav-number">5.</span> <span class="nav-text">总结</span></a></li></ol></div>
             
 
           </div>

@@ -1,0 +1,1229 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.0" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="iOS,Api," />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.1.0" />
+
+
+
+
+
+
+<meta name="description" content="概述这个搜索API允许你通过关键词在你的网站上搜索iTunes Store，App Store, iBooks Store and Mac App Store。你可以搜索各种内容；包括应用、图书、电影、广播、音乐、视频、有声读物以及TV节目。你也可以调用一个实名查询请求来创建内容库之间的映射和数字目录。开发者可以使用API里的推广的内容，包括歌曲预览，音乐录像，专辑封面和APP图标只用在推广的店面">
+<meta property="og:type" content="article">
+<meta property="og:title" content="iTunes Search API">
+<meta property="og:url" content="https://chanshiguan.github.io/2017/03/05/iTunes-Search-API/index.html">
+<meta property="og:site_name" content="陈伯君's 博客">
+<meta property="og:description" content="概述这个搜索API允许你通过关键词在你的网站上搜索iTunes Store，App Store, iBooks Store and Mac App Store。你可以搜索各种内容；包括应用、图书、电影、广播、音乐、视频、有声读物以及TV节目。你也可以调用一个实名查询请求来创建内容库之间的映射和数字目录。开发者可以使用API里的推广的内容，包括歌曲预览，音乐录像，专辑封面和APP图标只用在推广的店面">
+<meta property="og:image" content="http://upload-images.jianshu.io/upload_images/937424-fb3f1e4cacc6e9da.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+<meta property="og:image" content="http://upload-images.jianshu.io/upload_images/937424-8a9f240c53aa368f.jpg?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+<meta property="og:updated_time" content="2017-03-04T10:47:28.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="iTunes Search API">
+<meta name="twitter:description" content="概述这个搜索API允许你通过关键词在你的网站上搜索iTunes Store，App Store, iBooks Store and Mac App Store。你可以搜索各种内容；包括应用、图书、电影、广播、音乐、视频、有声读物以及TV节目。你也可以调用一个实名查询请求来创建内容库之间的映射和数字目录。开发者可以使用API里的推广的内容，包括歌曲预览，音乐录像，专辑封面和APP图标只用在推广的店面">
+<meta name="twitter:image" content="http://upload-images.jianshu.io/upload_images/937424-fb3f1e4cacc6e9da.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    sidebar: {"position":"left","display":"post","offset":12,"offset_float":0,"b2t":false,"scrollpercent":false},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: '6393166282442671000',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="https://chanshiguan.github.io/2017/03/05/iTunes-Search-API/"/>
+
+
+
+
+
+  <title> iTunes Search API | 陈伯君's 博客 </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+
+
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?d3c7272992bf77ba5ecdb6457f901bb7";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container one-collumn sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">陈伯君's 博客</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br />
+            
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocapitalize="off" autocomplete="off" autocorrect="off"
+             placeholder="搜索..." spellcheck="false"
+             type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="https://chanshiguan.github.io/2017/03/05/iTunes-Search-API/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="陈伯君">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/uploads/owen.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="陈伯君's 博客">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                iTunes Search API
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-03-05T02:19:19+08:00">
+                2017-03-04
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/iOS开发/" itemprop="url" rel="index">
+                    <span itemprop="name">iOS开发</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2017/03/05/iTunes-Search-API/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2017/03/05/iTunes-Search-API/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+             <span id="/2017/03/05/iTunes-Search-API/" class="leancloud_visitors" data-flag-title="iTunes Search API">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数 </span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+            <span class="post-meta-divider">|</span>
+            <span class="page-pv"><i class="fa fa-file-o"></i>
+            <span class="busuanzi-value" id="busuanzi_value_page_pv" ></span>
+            </span>
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h2 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h2><p>这个搜索API允许你通过关键词在你的网站上搜索iTunes Store，App Store, iBooks Store and Mac App Store。你可以搜索各种内容；包括应用、图书、电影、广播、音乐、视频、有声读物以及TV节目。你也可以调用一个实名查询请求来创建内容库之间的映射和数字目录。开发者可以使用API里的推广的内容，包括歌曲预览，音乐录像，专辑封面和APP图标只用在推广的店面，不用于娱乐用途。从API里使用音乐样本及其他必须和店面徽章相似。<a href="https://affiliate.itunes.apple.com/resources/documentation/itunes-store-web-service-search-api/#legal" target="_blank" rel="external">条款和条件适用</a>。</p>
+<p>这项计划允许当你的网站或者app获得点击后获得一些佣金。该项计划更多信息请查看：<a href="http://www.apple.com/itunes/affiliates" target="_blank" rel="external">http://www.apple.com/itunes/affiliates</a>。</p>
+<h2 id="搜索-iTunes-Store"><a href="#搜索-iTunes-Store" class="headerlink" title="搜索 iTunes Store"></a>搜索 iTunes Store</h2><p>通过web去查找并且显示结果在web网站上。你必须创建一个搜索区域，通过完全限定的URL请求iTunes Store，并从返回的结果中解析JSON。然后将结果显示在web上。<br>完整的网址必须有以下格式：</p>
+<p><a href="https://itunes.apple.com/search?parameterkeyvalue" target="_blank" rel="external">https://itunes.apple.com/search?parameterkeyvalue</a></p>
+<p>在参数里有一个或多个键值对，来详细说明你返回的结果。</p>
+<p>构造一个参数键值对，你必须将每个参数的key等于（=）一个字符串value。例如：key1 =value1。创建一个字符串键值对，你必须将每对键值对用与（&amp;）符号链接。例如:key1=value1&amp;key2=value2&amp;key3=value3</p>
+<p>注：当您为网站创建搜索域和脚本时，你应该使用动态脚本标签你的XMLHTTP脚本调用请求。例如:</p>
+<p>&lt;script src=”<a href="https://.../search?parameterkeyvalue&amp;callback=&quot;{name" target="_blank" rel="external">https://.../search?parameterkeyvalue&amp;callback=&quot;{name</a> of JavaScript function in webpage}”/&gt;</p>
+<p>您可以使用下表定义的参数的key和value来搜索iTunes Store，App Store，iBooks商店和Mac App Store里面的内容：</p>
+<p><img src="http://upload-images.jianshu.io/upload_images/937424-fb3f1e4cacc6e9da.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="火狐截图_2016-09-27T08-16-07.243Z.png"><br>ps:实在不会用markdown来实现表格套表格。。。。</p>
+<h3 id="内容"><a href="#内容" class="headerlink" title="内容"></a>内容</h3><ul>
+<li>关键是要正确编码你的URL才能被委托会员链接。在编码原始链接附属票据可以在<a href="https://affiliate.itunes.apple.com/resources/documentation/linking-to-the-itunes-music-store/" target="_blank" rel="external">Advanced Affiliate Linking</a>的文档中找到。</li>
+<li>为了提高请求时间，通过指定适当的limit参数，在检索api的时候返回极少数的结果。</li>
+<li>大型网站应该建立缓存逻辑，检索查找api的请求。为了说明这一点，请稍后查看本篇文章的Caching Architecture。</li>
+</ul>
+<h3 id="搜索例子"><a href="#搜索例子" class="headerlink" title="搜索例子"></a>搜索例子</h3><p>以下是具体的搜索请求完全合格的URL的例子：</p>
+<ul>
+<li>要搜索所有杰克·约翰逊的音频和视频内容（电影，播客，音乐，音乐视频，有声读物，电影短片和电视节目），您的网址将如下所示：<br><a href="https://itunes.apple.com/search?term=jack+johnson" target="_blank" rel="external">https://itunes.apple.com/search?term=jack+johnson</a></li>
+<li>要搜索所有杰克·约翰逊的音频和视频内容（电影，播客，音乐，音乐视频，有声读物，电影短片和电视节目），并且只返回前25条。您的网址将如下所示：<br><a href="https://itunes.apple.com/search?term=jack+johnson&amp;limit=25" target="_blank" rel="external">https://itunes.apple.com/search?term=jack+johnson&amp;limit=25</a></li>
+<li>要检索杰克·约翰逊的音频，您的网址将如下所示：<br><a href="https://itunes.apple.com/search?term=jack+johnson&amp;entity=musicVideo" target="_blank" rel="external">https://itunes.apple.com/search?term=jack+johnson&amp;entity=musicVideo</a></li>
+<li>要搜索所有吉姆·琼斯音频和视频内容，并返回只从加拿大iTunes商店的结果，您的网址将如下所示：<br><a href="https://itunes.apple.com/search?term=jim+jones&amp;country=ca" target="_blank" rel="external">https://itunes.apple.com/search?term=jim+jones&amp;country=ca</a></li>
+<li>要搜索名为“Yelp的”应用程序和来自美国的iTunes商店只返回的结果，您的网址将如下所示：<br><a href="https://itunes.apple.com/search?term=yelp&amp;country=us&amp;entity=software" target="_blank" rel="external">https://itunes.apple.com/search?term=yelp&amp;country=us&amp;entity=software</a></li>
+</ul>
+<h3 id="检索例子"><a href="#检索例子" class="headerlink" title="检索例子"></a>检索例子</h3><p>你也可以创建一个基于iTunes IDs, UPCs/ EANs的搜索请求去商店里面搜索内容。和所有音乐指南（AMG）标识的存储内容。基于ID的查找速度更快，而且含有较少的假阳性结果。</p>
+<p>以下是具体的查找请求完全合格的URL的例子：</p>
+<ul>
+<li>通过iTunes艺术家ID查找杰克·约翰逊：<br><a href="https://itunes.apple.com/lookup?id=909253" target="_blank" rel="external">https://itunes.apple.com/lookup?id=909253</a></li>
+<li>通过iTunes ID查找Yelp的软件应用程序：<br><a href="https://itunes.apple.com/lookup?id=284910350" target="_blank" rel="external">https://itunes.apple.com/lookup?id=284910350</a></li>
+<li>通过AMG艺术家ID查找杰克·约翰逊：<br><a href="https://itunes.apple.com/lookup?amgArtistId=468749" target="_blank" rel="external">https://itunes.apple.com/lookup?amgArtistId=468749</a></li>
+<li>通过AMG艺术家的ID查找多个艺术家：<br><a href="https://itunes.apple.com/lookup?amgArtistId=468749,5723" target="_blank" rel="external">https://itunes.apple.com/lookup?amgArtistId=468749,5723</a></li>
+<li>查找的杰克·约翰逊的所有专辑：<br><a href="https://itunes.apple.com/lookup?id=909253&amp;entity=album" target="_blank" rel="external">https://itunes.apple.com/lookup?id=909253&amp;entity=album</a></li>
+<li>其AMG艺术家的ID查找多个艺术家和获得每个艺术家的前5张专辑：<br><a href="https://itunes.apple.com/lookup?amgArtistId=468749,5723&amp;entity=album&amp;limit=5" target="_blank" rel="external">https://itunes.apple.com/lookup?amgArtistId=468749,5723&amp;entity=album&amp;limit=5</a></li>
+<li>通过AMG艺术家的ID查找多个艺术家和获得每个艺术家的5最新歌曲：<br><a href="https://itunes.apple.com/lookup?amgArtistId=468749,5723&amp;entity=song&amp;limit=5&amp;sort=recent" target="_blank" rel="external">https://itunes.apple.com/lookup?amgArtistId=468749,5723&amp;entity=song&amp;limit=5&amp;sort=recent</a></li>
+<li>通过UPC查找一个专辑或视频：<br><a href="https://itunes.apple.com/lookup?upc=720642462928" target="_blank" rel="external">https://itunes.apple.com/lookup?upc=720642462928</a></li>
+<li>通过UPC查找专辑，包括这张专辑的曲目：<br><a href="https://itunes.apple.com/lookup?upc=720642462928&amp;entity=song" target="_blank" rel="external">https://itunes.apple.com/lookup?upc=720642462928&amp;entity=song</a></li>
+<li>通过专辑ID来查找一个专辑：<br><a href="https://itunes.apple.com/lookup?amgAlbumId=15175,15176,15177,15178,15183,15184,15187,1519,15191,15195,15197,15198" target="_blank" rel="external">https://itunes.apple.com/lookup?amgAlbumId=15175,15176,15177,15178,15183,15184,15187,1519,15191,15195,15197,15198</a></li>
+<li>通过AMG视频ID查找一部电影：<br><a href="https://itunes.apple.com/lookup?amgVideoId=17120" target="_blank" rel="external">https://itunes.apple.com/lookup?amgVideoId=17120</a></li>
+<li>通过13位ISBN查找一本书：<br><a href="https://itunes.apple.com/lookup?isbn=9780316069359" target="_blank" rel="external">https://itunes.apple.com/lookup?isbn=9780316069359</a></li>
+</ul>
+<h3 id="了解搜索结果"><a href="#了解搜索结果" class="headerlink" title="了解搜索结果"></a>了解搜索结果</h3><p>你搜索的结果用JSON格式返回，JSON有两种结构：</p>
+<ul>
+<li>一种key/value的集合。也可以称之为一种对象，这个概念类似于Java Map对象，一个Javascript字典，或Pearl/ Ruby的哈希值。对象是一个无序的名称/值对，用左括号开始（{）和一个右括号结束（}）。每个名称由双引号包围，后跟一个冒号（:)）;名称/值对用逗号（，）隔开。</li>
+<li>值的有序列表，也称为阵列。数组是值的有序集合，用左括号开头（[），并以右括号结束（]）。值用逗号（，）分隔。</li>
+</ul>
+<p>所有的JSON结果被编码为UTF-8。有关JSON的更多信息，请参阅<a href="http://www.json.org" target="_blank" rel="external">http://www.json.org</a>。</p>
+<p>下面的示例显示在iTunes Store的歌曲JSON的结果<br><figure class="highlight objc"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div></pre></td><td class="code"><pre><div class="line">&#123;<span class="string">"wrapperType"</span>:<span class="string">"track"</span>,</div><div class="line"><span class="string">"kind"</span>:<span class="string">"song"</span>,</div><div class="line"><span class="string">"artistId"</span>:<span class="number">909253</span>,</div><div class="line"><span class="string">"collectionId"</span>:<span class="number">120954021</span>,</div><div class="line"><span class="string">"trackId"</span>:<span class="number">120954025</span>,</div><div class="line"><span class="string">"artistName"</span>:<span class="string">"Jack Johnson"</span>,</div><div class="line"><span class="string">"collectionName"</span>:<span class="string">"Sing-a-Longs and Lullabies for the Film Curious George"</span>,</div><div class="line"><span class="string">"trackName"</span>:<span class="string">"Upside Down"</span>,</div><div class="line"><span class="string">"collectionCensoredName"</span>:<span class="string">"Sing-a-Longs and Lullabies for the Film Curious George"</span>,</div><div class="line"><span class="string">"trackCensoredName"</span>:<span class="string">"Upside Down"</span>,</div><div class="line"><span class="string">"artistViewUrl"</span>:<span class="string">"https://itunes.apple.com/WebObjects/MZStore.woa/wa/viewArtist?id=909253"</span>,</div><div class="line"><span class="string">"collectionViewUrl"</span>:<span class="string">"https://itunes.apple.com/WebObjects/MZStore.woa/wa/viewAlbum?i=120954025&amp;id=120954021&amp;s=143441"</span>,</div><div class="line"><span class="string">"trackViewUrl"</span>:<span class="string">"https://itunes.apple.com/WebObjects/MZStore.woa/wa/viewAlbum?i=120954025&amp;id=120954021&amp;s=143441"</span>,</div><div class="line"><span class="string">"previewUrl"</span>:<span class="string">"http://a1099.itunes.apple.com/r10/Music/f9/54/43/mzi.gqvqlvcq.aac.p.m4p"</span>,</div><div class="line"><span class="string">"artworkUrl60"</span>:<span class="string">"http://a1.itunes.apple.com/r10/Music/3b/6a/33/mzi.qzdqwsel.60x60-50.jpg"</span>,</div><div class="line"><span class="string">"artworkUrl100"</span>:<span class="string">"http://a1.itunes.apple.com/r10/Music/3b/6a/33/mzi.qzdqwsel.100x100-75.jpg"</span>,</div><div class="line"><span class="string">"collectionPrice"</span>:<span class="number">10.99</span>,</div><div class="line"><span class="string">"trackPrice"</span>:<span class="number">0.99</span>,</div><div class="line"><span class="string">"collectionExplicitness"</span>:<span class="string">"notExplicit"</span>,</div><div class="line"><span class="string">"trackExplicitness"</span>:<span class="string">"notExplicit"</span>,</div><div class="line"><span class="string">"discCount"</span>:<span class="number">1</span>,</div><div class="line"><span class="string">"discNumber"</span>:<span class="number">1</span>,</div><div class="line"><span class="string">"trackCount"</span>:<span class="number">14</span>,</div><div class="line"><span class="string">"trackNumber"</span>:<span class="number">1</span>,</div><div class="line"><span class="string">"trackTimeMillis"</span>:<span class="number">210743</span>,</div><div class="line"><span class="string">"country"</span>:<span class="string">"USA"</span>,</div><div class="line"><span class="string">"currency"</span>:<span class="string">"USD"</span>,</div><div class="line"><span class="string">"primaryGenreName"</span>:<span class="string">"Rock"</span>&#125;</div></pre></td></tr></table></figure></p>
+<p>下表定义了JSON格式返回结果的键和值：</p>
+<table>
+<thead>
+<tr>
+<th style="text-align:left">key</th>
+<th style="text-align:left">描述</th>
+<th style="text-align:left">是否返回</th>
+<th style="text-align:left">返回值以及例子</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left">wrapperType</td>
+<td style="text-align:left">The name of the object returned by the search request.</td>
+<td style="text-align:left">Y</td>
+<td style="text-align:left">track, collection, artistFor example: track.</td>
+</tr>
+<tr>
+<td style="text-align:left">* explicitness</td>
+<td style="text-align:left">The Recording Industry Association of America (RIAA) parental advisory for the content returned by the search request.For more information, see <a href="http://itunes.apple.com/WebObjects/MZStore.woa/wa/parentalAdvisory" target="_blank" rel="external">http://itunes.apple.com/WebObjects/MZStore.woa/wa/parentalAdvisory</a></td>
+<td style="text-align:left">Y</td>
+<td style="text-align:left">explicit (explicit lyrics, possibly explicit album cover), cleaned (explicit lyrics “bleeped out”), notExplicit (no explicit lyrics)For example: “trackExplicitness”:”notExplicit”.</td>
+</tr>
+<tr>
+<td style="text-align:left">kind</td>
+<td style="text-align:left">The kind of content returned by the search request.</td>
+<td style="text-align:left">Y</td>
+<td style="text-align:left">book, album, coached-audio, feature-movie, interactive- booklet, music-video, pdf podcast, podcast-episode, software-package, song, tv- episode, artistFor example: song.</td>
+</tr>
+<tr>
+<td style="text-align:left">trackName</td>
+<td style="text-align:left">The name of the track, song, video, TV episode, and so on returned by the search request.</td>
+<td style="text-align:left">y</td>
+<td style="text-align:left">For example: “Banana Pancakes”.</td>
+</tr>
+<tr>
+<td style="text-align:left">artistName</td>
+<td style="text-align:left">The name of the artist returned by the search request.</td>
+<td style="text-align:left">Y</td>
+<td style="text-align:left">For example: Jack Johnson.</td>
+</tr>
+<tr>
+<td style="text-align:left">collectionName</td>
+<td style="text-align:left">The name of the album, TV season, audiobook, and so on returned by the search request.</td>
+<td style="text-align:left">Y</td>
+<td style="text-align:left">For example: “In Between Dreams”.</td>
+</tr>
+<tr>
+<td style="text-align:left">*censoredName</td>
+<td style="text-align:left">The name of the album, TV season, audiobook, and so on returned by the search request, with objectionable words *’d out.Note: Artist names are never censored.</td>
+<td style="text-align:left">Y</td>
+<td style="text-align:left">For example: “S**t Happens”.</td>
+</tr>
+<tr>
+<td style="text-align:left">artworkUrl100, artworkUrl60</td>
+<td style="text-align:left">A URL for the artwork associated with the returned media type, sized to 100×100 pixels or 60×60 pixels.</td>
+<td style="text-align:left">Only returned when artwork is available</td>
+<td style="text-align:left">For example: “<a href="http:// a1.itunes.apple.com/jp/r10/Music/ y2005/m06/d03/h05/ s05.oazjtxkw.100×100-75.jpg" target="_blank" rel="external">http:// a1.itunes.apple.com/jp/r10/Music/ y2005/m06/d03/h05/ s05.oazjtxkw.100×100-75.jpg</a>”.</td>
+</tr>
+<tr>
+<td style="text-align:left">*viewURL</td>
+<td style="text-align:left">A URL for the content associated with the returned media type. You can click the URL to view the content in the iTunes Store.</td>
+<td style="text-align:left">Y</td>
+<td style="text-align:left">For example: “<a href="http:// itunes.apple.com/WebObjects/ MZStore.woa/wa/viewAlbum? i=68615807&amp;id=68615813&amp;s=1434 62" target="_blank" rel="external">http:// itunes.apple.com/WebObjects/ MZStore.woa/wa/viewAlbum? i=68615807&amp;id=68615813&amp;s=1434 62</a>”.</td>
+</tr>
+<tr>
+<td style="text-align:left">previewUrl</td>
+<td style="text-align:left">A URL referencing the 30-second preview file for the content associated with the returned media type.</td>
+<td style="text-align:left">Only returned when media type is track</td>
+<td style="text-align:left">For example: “<a href="http:// a392.itunes.apple.com/jp/r10/ Music/y2005/m06/d03/h05/s05.zdzqlufu.p.m4p" target="_blank" rel="external">http:// a392.itunes.apple.com/jp/r10/ Music/y2005/m06/d03/h05/s05.zdzqlufu.p.m4p</a>”.</td>
+</tr>
+<tr>
+<td style="text-align:left">trackTimeMillis</td>
+<td style="text-align:left">The returned track’s time in milliseconds.</td>
+<td style="text-align:left">Only returned when media type is track</td>
+<td style="text-align:left">无</td>
+</tr>
+</tbody>
+</table>
+<h2 id="缓存框架"><a href="#缓存框架" class="headerlink" title="缓存框架"></a>缓存框架</h2><p><img src="http://upload-images.jianshu.io/upload_images/937424-8a9f240c53aa368f.jpg?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="cache-architecture-1.jpg"></p>
+<h2 id="法律声明"><a href="#法律声明" class="headerlink" title="法律声明"></a>法律声明</h2><p>开发人员可以使用某些促销内容，可以通过苹果公司提供，包括歌曲预览和音乐视频，专辑封面，和App图标（“促销内容”），促进了促销内容的主题的目的;提供了这种促销内容：（一）被放置仅在促进该促销内容是基于内容页面; （二）是接近了“iTunes下载”，“下载的应用程序商店”或“下载的iBooks商店”标志（如批准苹果公司）充当直接链接到iTunes中或App Store页面，消费者可以购买该宣传内容; （三）包括归属指示促销内容是“提供了iTunes的礼遇”如果这样的促销内容包括歌曲或音乐视频预览; （四）仅流，而不是下载，保存，缓存，或者与视频同步，如果这样的促销内容包括歌曲或音乐视频预览; （五）不用于除了其促销目的独立娱乐价值;及（六）不用于促进任何其他商品或服务。开发商承认，苹果提供的促销内容的“原样”，并拒绝任何和所有陈述或担保，包括但不限于非侵权。开发者应将与促销内容到苹果在收到立即连接收到任何索赔，并将根据要求苹果公司立刻删除任何促销内容。</p>
+<p>本协议和您的宣传内容使用受加利福尼亚州法律管辖。</p>
+<p>原文地址：<a href="http://www.apple.com/itunes/affiliates/resources/documentation/itunes-store-web-service-search-api.html" target="_blank" rel="external">http://www.apple.com/itunes/affiliates/resources/documentation/itunes-store-web-service-search-api.html</a></p>
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/iOS/" rel="tag"># iOS</a>
+          
+            <a href="/tags/Api/" rel="tag"># Api</a>
+          
+        </div>
+      
+
+      
+        
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2017/03/05/iOS8-3以后无法访问沙盒-解决办法/" rel="next" title="iOS8.3以后无法访问沙盒 解决办法">
+                <i class="fa fa-chevron-left"></i> iOS8.3以后无法访问沙盒 解决办法
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2017/03/05/iOS-跳转到第三方应用或者设置页面/" rel="prev" title="iOS 跳转到第三方应用或者设置页面">
+                iOS 跳转到第三方应用或者设置页面 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+        <!-- JiaThis Button BEGIN -->
+<div class="jiathis_style">
+  <a class="jiathis_button_tsina"></a>
+  <a class="jiathis_button_tqq"></a>
+  <a class="jiathis_button_weixin"></a>
+  <a class="jiathis_button_cqq"></a>
+  <a class="jiathis_button_douban"></a>
+  <a class="jiathis_button_renren"></a>
+  <a class="jiathis_button_qzone"></a>
+  <a class="jiathis_button_kaixin001"></a>
+  <a class="jiathis_button_copy"></a>
+  <a href="http://www.jiathis.com/share" class="jiathis jiathis_txt jiathis_separator jtico jtico_jiathis" target="_blank"></a>
+  <a class="jiathis_counter_style"></a>
+</div>
+<script type="text/javascript" >
+  var jiathis_config={
+    hideMore:false
+  }
+</script>
+<script type="text/javascript" src="http://v3.jiathis.com/code/jia.js" charset="utf-8"></script>
+<!-- JiaThis Button END -->
+
+      
+    </div>
+  </div>
+
+          
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+      <div class="ds-thread" data-thread-key="2017/03/05/iTunes-Search-API/"
+           data-title="iTunes Search API" data-url="https://chanshiguan.github.io/2017/03/05/iTunes-Search-API/">
+      </div>
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/uploads/owen.jpg"
+               alt="陈伯君" />
+          <p class="site-author-name" itemprop="name">陈伯君</p>
+           
+              <p class="site-description motion-element" itemprop="description">虽然还没想好写点什么，但是总觉得这里放句话比较和谐</p>
+          
+        </div>
+        <nav class="site-state motion-element">
+        
+          
+            <div class="site-state-item site-state-posts">
+              <a href="/archives">
+                <span class="site-state-item-count">7</span>
+                <span class="site-state-item-name">日志</span>
+              </a>
+            </div>
+          
+
+          
+            <div class="site-state-item site-state-categories">
+              <a href="/categories">
+                <span class="site-state-item-count">4</span>
+                <span class="site-state-item-name">分类</span>
+              </a>
+            </div>
+          
+
+          
+            <div class="site-state-item site-state-tags">
+              <a href="/tags">
+                <span class="site-state-item-count">5</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/chanshiguan" target="_blank" title="GitHub">
+                  
+                    <i class="fa fa-fw fa-github"></i>
+                  
+                  GitHub
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="https://www.weibo.com/chanshijun" target="_blank" title="Weibo">
+                  
+                    <i class="fa fa-fw fa-weibo"></i>
+                  
+                  Weibo
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        
+        
+
+        
+
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#概述"><span class="nav-number">1.</span> <span class="nav-text">概述</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#搜索-iTunes-Store"><span class="nav-number">2.</span> <span class="nav-text">搜索 iTunes Store</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#内容"><span class="nav-number">2.1.</span> <span class="nav-text">内容</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#搜索例子"><span class="nav-number">2.2.</span> <span class="nav-text">搜索例子</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#检索例子"><span class="nav-number">2.3.</span> <span class="nav-text">检索例子</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#了解搜索结果"><span class="nav-number">2.4.</span> <span class="nav-text">了解搜索结果</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#缓存框架"><span class="nav-number">3.</span> <span class="nav-text">缓存框架</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#法律声明"><span class="nav-number">4.</span> <span class="nav-text">法律声明</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2017</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">陈伯君</span>
+</div>
+
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Pisces
+  </a>
+</div>
+
+
+        
+
+<div class="busuanzi-count">
+
+  <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+    <span class="site-uv"><i class="fa fa-user"></i><span class="busuanzi-value" id="busuanzi_value_site_uv"></span></span>
+  
+
+  
+    <span class="site-pv"><i class="fa fa-eye"></i><span class="busuanzi-value" id="busuanzi_value_site_pv"></span></span>
+  
+  
+</div>
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+    
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.0"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.0"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.0"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.0"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.0"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.0"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.0"></script>
+
+
+
+  
+
+  
+    
+  
+
+  <script type="text/javascript">
+    var duoshuoQuery = {short_name:"chanshiguan"};
+    (function() {
+      var ds = document.createElement('script');
+      ds.type = 'text/javascript';ds.async = true;
+      ds.id = 'duoshuo-script';
+      ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+      ds.charset = 'UTF-8';
+      (document.getElementsByTagName('head')[0]
+      || document.getElementsByTagName('body')[0]).appendChild(ds);
+    })();
+  </script>
+
+  
+    
+    
+    <script src="/lib/ua-parser-js/dist/ua-parser.min.js?v=0.7.9"></script>
+    <script src="/js/src/hook-duoshuo.js"></script>
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    // Search DB path;
+    var search_path = "";
+    if (search_path.length == 0) {
+      search_path = "search.xml";
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.popup').toggle();
+    }
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+      $.ajax({
+        url: path,
+        dataType: "xml",
+        async: true,
+        success: function( xmlResponse ) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = $( "entry", xmlResponse ).map(function() {
+            return {
+              title: $( "title", this ).text(),
+              content: $("content",this).text(),
+              url: $( "url" , this).text()
+            };
+          }).get();
+          var $input = document.getElementById(search_id);
+          var $resultContent = document.getElementById(content_id);
+          $input.addEventListener('input', function(){
+            var matchcounts = 0;
+            var str='<ul class=\"search-result-list\">';
+            var keywords = this.value.trim().toLowerCase().split(/[\s\-]+/);
+            $resultContent.innerHTML = "";
+            if (this.value.trim().length > 1) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var content_index = [];
+                var data_title = data.title.trim().toLowerCase();
+                var data_content = data.content.trim().replace(/<[^>]+>/g,"").toLowerCase();
+                var data_url = decodeURIComponent(data.url);
+                var index_title = -1;
+                var index_content = -1;
+                var first_occur = -1;
+                // only match artiles with not empty titles and contents
+                if(data_title != '') {
+                  keywords.forEach(function(keyword, i) {
+                    index_title = data_title.indexOf(keyword);
+                    index_content = data_content.indexOf(keyword);
+                    if( index_title >= 0 || index_content >= 0 ){
+                      isMatch = true;
+                      if (i == 0) {
+                        first_occur = index_content;
+                      }
+                    }
+
+                  });
+                }
+                // show search results
+                if (isMatch) {
+                  matchcounts += 1;
+                  str += "<li><a href='"+ data_url +"' class='search-result-title'>"+ data_title +"</a>";
+                  var content = data.content.trim().replace(/<[^>]+>/g,"");
+                  if (first_occur >= 0) {
+                    // cut out 100 characters
+                    var start = first_occur - 20;
+                    var end = first_occur + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if(start == 0){
+                      end = 50;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    var match_content = content.substring(start, end);
+                    // highlight all keywords
+                    keywords.forEach(function(keyword){
+                      var regS = new RegExp(keyword, "gi");
+                      match_content = match_content.replace(regS, "<b class=\"search-keyword\">"+keyword+"</b>");
+                    });
+
+                    str += "<p class=\"search-result\">" + match_content +"...</p>"
+                  }
+                  str += "</li>";
+                }
+              })};
+            str += "</ul>";
+            if (matchcounts == 0) { str = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>' }
+            if (keywords == "") { str = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>' }
+            $resultContent.innerHTML = str;
+          });
+          proceedsearch();
+        }
+      });}
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched == false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(function(e){
+      $('.popup').hide();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    });
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+  </script>
+
+
+  
+  
+
+
+  
+
+  
+  <script src="https://cdn1.lncld.net/static/js/av-core-mini-0.6.1.js"></script>
+  <script>AV.initialize("h1KV2mICuIrTtY7eLkLakOL7-gzGzoHsz", "IL5S2hJTECBxNCPglnWLJY1w");</script>
+  <script>
+    function showTime(Counter) {
+      var query = new AV.Query(Counter);
+      var entries = [];
+      var $visitors = $(".leancloud_visitors");
+
+      $visitors.each(function () {
+        entries.push( $(this).attr("id").trim() );
+      });
+
+      query.containedIn('url', entries);
+      query.find()
+        .done(function (results) {
+          var COUNT_CONTAINER_REF = '.leancloud-visitors-count';
+
+          if (results.length === 0) {
+            $visitors.find(COUNT_CONTAINER_REF).text(0);
+            return;
+          }
+
+          for (var i = 0; i < results.length; i++) {
+            var item = results[i];
+            var url = item.get('url');
+            var time = item.get('time');
+            var element = document.getElementById(url);
+
+            $(element).find(COUNT_CONTAINER_REF).text(time);
+          }
+          for(var i = 0; i < entries.length; i++) {
+            var url = entries[i];
+            var element = document.getElementById(url);
+            var countSpan = $(element).find(COUNT_CONTAINER_REF);
+            if( countSpan.text() == '') {
+              countSpan.text(0);
+            }
+          }
+        })
+        .fail(function (object, error) {
+          console.log("Error: " + error.code + " " + error.message);
+        });
+    }
+
+    function addCount(Counter) {
+      var $visitors = $(".leancloud_visitors");
+      var url = $visitors.attr('id').trim();
+      var title = $visitors.attr('data-flag-title').trim();
+      var query = new AV.Query(Counter);
+
+      query.equalTo("url", url);
+      query.find({
+        success: function(results) {
+          if (results.length > 0) {
+            var counter = results[0];
+            counter.fetchWhenSave(true);
+            counter.increment("time");
+            counter.save(null, {
+              success: function(counter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(counter.get('time'));
+              },
+              error: function(counter, error) {
+                console.log('Failed to save Visitor num, with error message: ' + error.message);
+              }
+            });
+          } else {
+            var newcounter = new Counter();
+            /* Set ACL */
+            var acl = new AV.ACL();
+            acl.setPublicReadAccess(true);
+            acl.setPublicWriteAccess(true);
+            newcounter.setACL(acl);
+            /* End Set ACL */
+            newcounter.set("title", title);
+            newcounter.set("url", url);
+            newcounter.set("time", 1);
+            newcounter.save(null, {
+              success: function(newcounter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(newcounter.get('time'));
+              },
+              error: function(newcounter, error) {
+                console.log('Failed to create');
+              }
+            });
+          }
+        },
+        error: function(error) {
+          console.log('Error:' + error.code + " " + error.message);
+        }
+      });
+    }
+
+    $(function() {
+      var Counter = AV.Object.extend("Counter");
+      if ($('.leancloud_visitors').length == 1) {
+        addCount(Counter);
+      } else if ($('.post-title-link').length > 1) {
+        showTime(Counter);
+      }
+    });
+  </script>
+
+
+
+  
+<script>
+(function(){
+    var bp = document.createElement('script');
+    var curProtocol = window.location.protocol.split(':')[0];
+    if (curProtocol === 'https') {
+        bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';        
+    }
+    else {
+        bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+    }
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(bp, s);
+})();
+</script>
+
+
+  
+
+
+  
+
+</body>
+</html>
